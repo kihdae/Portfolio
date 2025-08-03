@@ -1,0 +1,122 @@
+/* ==========================================================================
+   Player Toggle Component Styles
+   ========================================================================== */
+
+/* Base toggle styles */
+.player-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default (off) state */
+.player-toggle[data-state='off'] {
+  background: var(--toggle-off-background);
+  border: 1px solid var(--toggle-off-border);
+  color: var(--toggle-off-text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Pressed (on) state */
+.player-toggle[data-state='on'] {
+  background: var(--toggle-on-background);
+  border: 1px solid var(--toggle-on-border);
+  color: var(--toggle-on-text);
+  box-shadow:
+    0 0 8px var(--toggle-glow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover state */
+.player-toggle:hover {
+  border-color: var(--toggle-hover-border);
+  background: var(--toggle-hover-background);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.player-toggle[data-state='on']:hover {
+  background: var(--toggle-on-background);
+  border-color: var(--toggle-on-border);
+  box-shadow:
+    0 0 12px var(--toggle-glow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Enhanced track list styling for better theme integration */
+.wmp-track-list .wmp-track-item {
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.wmp-track-list .wmp-track-item:hover {
+  border-left-color: var(--color-accent-primary);
+  background: var(--color-interactive-hover);
+}
+
+.wmp-track-list .wmp-track-item.active {
+  border-left-color: var(--color-accent-primary);
+  background: var(--color-accent-primary);
+  color: var(--color-background-primary);
+  box-shadow: 0 0 8px var(--color-accent-primary);
+}
+
+/* Focus state */
+.player-toggle:focus-visible {
+  outline: none;
+  ring: 2px;
+  ring-color: rgba(0, 255, 65, 0.5);
+  ring-offset: 2px;
+  ring-offset-color: rgba(13, 13, 13, 1);
+}
+
+/* Active state (when being pressed) */
+.player-toggle:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Icon animations */
+.player-toggle[data-state='on'] svg {
+  animation: toggleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes toggleGlow {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(0, 255, 65, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 4px rgba(0, 255, 65, 0.8));
+  }
+}
+
+/* Shuffle specific styles */
+.player-toggle[data-shuffle='true'][data-state='on'] {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 65, 0.15),
+    rgba(0, 179, 45, 0.15)
+  );
+}
+
+/* Fullscreen specific styles */
+.player-toggle[data-fullscreen='true'][data-state='on'] {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 65, 0.15),
+    rgba(0, 229, 210, 0.15)
+  );
+}
+
+/* Disabled state */
+.player-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.player-toggle:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}

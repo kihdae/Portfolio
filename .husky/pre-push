@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push checks..."
+
+# Run quality checks
+npm run quality-check
+if [ $? -ne 0 ]; then
+  echo "❌ Quality checks failed. Fix issues before pushing."
+  exit 1
+fi
+
+# Run tests
+npm run test:ci
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed. Fix test issues before pushing."
+  exit 1
+fi
+
+# Run security audit
+npm run security-audit
+if [ $? -ne 0 ]; then
+  echo "❌ Security audit failed. Fix security issues before pushing."
+  exit 1
+fi
+
+echo "✅ All pre-push checks passed!" 

@@ -1,0 +1,95 @@
+/* Intricate, Intimate, and Dark Scrollbar Theme - Theme-Agnostic */
+
+.scrollbar {
+  background-color: color-mix(
+    in srgb,
+    var(--color-background) 50%,
+    transparent
+  ); /* Dark, semi-transparent track */
+  border-radius: 12px;
+  width: 12px; /* Slightly wider for a more substantial feel */
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-accent) 10%, transparent); /* Faint accent border */
+  transition: background-color 0.3s ease;
+}
+
+.scrollbar:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--color-background) 70%,
+    transparent
+  ); /* Darken track on hover */
+}
+
+.thumb {
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary-accent) 30%,
+    transparent
+  ); /* Accent color for the thumb */
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary-accent) 50%, transparent);
+  box-shadow: 0 0 5px
+    color-mix(in srgb, var(--color-primary-accent) 20%, transparent);
+}
+
+.thumb:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary-accent) 50%,
+    transparent
+  ); /* Brighter thumb on hover */
+  box-shadow: 0 0 15px
+    color-mix(in srgb, var(--color-primary-accent) 50%, transparent);
+}
+
+/* Subtle texture on the thumb */
+.thumb::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%2300ff00" fill-opacity="0.1" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"></path></svg>');
+  opacity: 0.3;
+}
+
+/* Glowing effect */
+.thumb::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-primary-accent) 40%, transparent) 0%,
+    transparent 70%
+  );
+  animation: scrollbar-glow 3s infinite alternate;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.wmp-track-list:hover .thumb::before,
+.scrollbar:hover .thumb::before {
+  opacity: 1;
+}
+
+@keyframes scrollbar-glow {
+  from {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.5;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}

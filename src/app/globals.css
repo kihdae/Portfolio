@@ -1,26 +1,221 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'aos/dist/aos.css';
+
+  
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background-primary: #0d0d0d;
+  --color-surface-primary: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-accent-primary: #ffffff;
+  --color-accent-secondary: #e0e0e0;
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-shadow: rgba(0, 0, 0, 0.8);
+  --color-interactive-hover: rgba(255, 255, 255, 0.08);
+  --color-interactive-active: rgba(255, 255, 255, 0.15);
+
+  --color-background: #0d0d0d;
+  --color-surface: #1a1a1a;
+  --color-primary-accent: #ffffff;
+  --color-secondary-accent: #e0e0e0;
+  --color-disabled: #404040;
+  --color-error: #ff4444;
+  --color-error-text: #ffffff;
+
+  --mixer-visualizer-color-1: #ffffff;
+  --mixer-visualizer-color-2: #e0e0e0;
+  --mixer-visualizer-color-3: #a0a0a0;
+  --mixer-background-overlay: rgba(13, 13, 13, 0.95);
+  --mixer-control-background: rgba(26, 26, 26, 0.8);
+  --mixer-control-border: rgba(255, 255, 255, 0.15);
+  --mixer-slider-track: #1a1a1a;
+  --mixer-slider-thumb: #ffffff;
+  --mixer-slider-thumb-hover: #e0e0e0;
+
+  --player-control-background: rgba(26, 26, 26, 0.8);
+  --player-tracklist-background: rgba(13, 13, 13, 0.9);
+  --player-progress-track: #0d0d0d;
+  --player-progress-fill: #ffffff;
+  --player-album-art-border: rgba(255, 255, 255, 0.15);
+  --player-header-background: rgba(0, 0, 0, 0.1);
+  --player-window-border: rgba(255, 255, 255, 0.15);
+
+  --toggle-off-background: rgba(26, 26, 26, 0.8);
+  --toggle-off-border: rgba(255, 255, 255, 0.08);
+  --toggle-off-text: rgba(160, 160, 160, 0.8);
+  --toggle-on-background: rgba(255, 255, 255, 0.12);
+  --toggle-on-border: rgba(255, 255, 255, 0.3);
+  --toggle-on-text: rgba(255, 255, 255, 1);
+  --toggle-hover-background: rgba(26, 26, 26, 0.9);
+  --toggle-hover-border: rgba(255, 255, 255, 0.2);
+  --toggle-glow-color: rgba(255, 255, 255, 0.25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply min-h-screen w-screen overflow-hidden bg-background text-text-primary;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(190, 165, 242, 0.05) 1px,
+      transparent 1px
+    );
+    background-size: 20px 20px;
+    z-index: -1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .text-shadow-lg {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .border-subtle {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .border-subtle-accent {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .border-subtle-ultra {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .bg-subtle-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(26, 26, 26, 0.95) 0%,
+      rgba(26, 26, 26, 0.85) 100%
+    );
+    backdrop-filter: blur(8px);
+  }
+
+  .bg-subtle-card {
+    background: linear-gradient(
+      135deg,
+      rgba(26, 26, 26, 0.8) 0%,
+      rgba(26, 26, 26, 0.6) 100%
+    );
+    backdrop-filter: blur(4px);
+  }
+
+  .separator-subtle {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-primary);
+    opacity: 0.3;
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thumb-\[var\(--color-border\)\]::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+  }
+
+  .hover\:scrollbar-thumb-\[var\(--color-accent-primary\)\]\/30:hover::-webkit-scrollbar-thumb {
+    background: var(--color-accent-primary);
+    opacity: 0.3;
+  }
+}
+
+.login-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+.login-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-form {
+  background: transparent;
+  width: 300px;
+  padding: 20px;
+  z-index: 1;
+  text-align: center;
+}
+
+.login-button {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+
+.login-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.login-button:active {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(0.98);
 }

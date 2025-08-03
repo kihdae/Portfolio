@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-08-02T23:42:11.424Z",
+  "results": {
+    "gitignore": true,
+    "envFiles": false,
+    "secrets": true,
+    "packageJson": true,
+    "nextConfig": true
+  },
+  "summary": {
+    "total": 5,
+    "passed": 4,
+    "failed": 1
+  }
+}

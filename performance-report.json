@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-08-02T23:07:53.610Z",
+  "metrics": {
+    "bundleSize": {
+      "jsSize": "1.26 MB",
+      "cssSize": "95.97 KB",
+      "totalSize": "1.35 MB"
+    },
+    "imageOptimization": {
+      "totalImages": 15,
+      "totalSize": "26.12 MB",
+      "averageSize": "1.74 MB",
+      "images": [
+        {
+          "name": "CodeNation-optimized.gif",
+          "size": "12.94 MB"
+        },
+        {
+          "name": "animated-clouds.gif",
+          "size": "2.98 MB"
+        },
+        {
+          "name": "animated_cat_city.gif",
+          "size": "2.73 MB"
+        },
+        {
+          "name": "animated_pixel_cat.gif",
+          "size": "560.56 KB"
+        },
+        {
+          "name": "asylum.jpg",
+          "size": "55.22 KB"
+        },
+        {
+          "name": "avatar.jpg",
+          "size": "78.94 KB"
+        },
+        {
+          "name": "earth.gif",
+          "size": "509.48 KB"
+        },
+        {
+          "name": "evang.jpg",
+          "size": "23.32 KB"
+        },
+        {
+          "name": "evangelion.jpg",
+          "size": "54.08 KB"
+        },
+        {
+          "name": "hxh.gif",
+          "size": "855.75 KB"
+        },
+        {
+          "name": "lain.gif",
+          "size": "1.01 MB"
+        },
+        {
+          "name": "meme.jpg",
+          "size": "48.47 KB"
+        },
+        {
+          "name": "paper.gif",
+          "size": "836.91 KB"
+        },
+        {
+          "name": "raven.gif",
+          "size": "722.48 KB"
+        },
+        {
+          "name": "restart.gif",
+          "size": "2.81 MB"
+        }
+      ]
+    },
+    "fontLoading": {},
+    "cssPurge": {
+      "totalSize": "95.97 KB",
+      "estimatedClasses": 1592,
+      "files": 3
+    },
+    "securityHeaders": {
+      "total": 4,
+      "implemented": 4,
+      "missing": []
+    }
+  },
+  "recommendations": []
+}

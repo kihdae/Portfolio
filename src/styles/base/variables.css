@@ -1,0 +1,61 @@
+@layer base {
+  :root {
+    /* Color System */
+    --color-primary: 221 70% 55%;
+    --color-secondary: 215 25% 27%;
+    --color-accent: 187 100% 42%;
+
+    /* UI Colors */
+    --color-surface: 0 0% 100%;
+    --color-surface-hover: 0 0% 98%;
+    --color-surface-active: 0 0% 95%;
+
+    /* Text Colors */
+    --color-text-primary: 215 25% 27%;
+    --color-text-secondary: 215 20% 65%;
+
+    /* Spacing System */
+    --space-unit: 0.25rem;
+    --space-xs: calc(var(--space-unit) * 1);
+    --space-sm: calc(var(--space-unit) * 2);
+    --space-md: calc(var(--space-unit) * 4);
+    --space-lg: calc(var(--space-unit) * 6);
+    --space-xl: calc(var(--space-unit) * 8);
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 150ms;
+    --transition-normal: 250ms;
+    --transition-slow: 350ms;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(var(--color-secondary) / 0.1);
+    --shadow-md: 0 4px 6px hsl(var(--color-secondary) / 0.1);
+    --shadow-lg: 0 10px 15px hsl(var(--color-secondary) / 0.1);
+
+    /* Z-index layers */
+    --z-below: -1;
+    --z-normal: 1;
+    --z-above: 10;
+    --z-modal: 100;
+    --z-tooltip: 1000;
+
+    /* Blur Effects */
+    --blur-sm: 4px;
+    --blur-md: 8px;
+    --blur-lg: 16px;
+  }
+
+  .dark {
+    --color-surface: 215 32% 27%;
+    --color-surface-hover: 215 29% 29%;
+    --color-surface-active: 215 26% 31%;
+    --color-text-primary: 0 0% 100%;
+    --color-text-secondary: 215 20% 65%;
+  }
+}

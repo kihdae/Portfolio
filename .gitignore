@@ -9,10 +9,13 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
+.package-lock.json
+.spotify_tokens.json
+.spotify_embeds.json
+/scripts 
 # testing
 /coverage
-
+/md
 # next.js
 /.next/
 /out/
@@ -29,9 +32,20 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
 # env files (can opt-in for committing if needed)
 .env*
+.env.local
+.env.production
+.env.development
+
+# security files
+*.key
+secrets.json
+*.pem
+*.crt
+*.cert
 
 # vercel
 .vercel
