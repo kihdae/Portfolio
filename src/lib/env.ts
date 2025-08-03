@@ -56,9 +56,7 @@ export function validateClientEnv(): void {
 
 export function validateServerEnv(): void {
   const required = [
-    // Add your required server variables here
-    // 'SPOTIFY_CLIENT_SECRET',
-    // 'JWT_SECRET',
+    
   ] as const;
 
   const missing = required.filter(key => !serverEnv[key]);
@@ -74,7 +72,7 @@ export function validateServerEnv(): void {
 export function validateProductionEnv(): void {
   validateClientEnv();
 
-  // Additional production-specific validations
+  
   if (process.env.NODE_ENV === 'production') {
     if (
       !clientEnv.SITE_URL ||
@@ -128,7 +126,7 @@ export function logEnvironmentConfig(): void {
     `  Weather Widget: ${isFeatureEnabled('ENABLE_WEATHER_WIDGET') ? '✅ Enabled' : '❌ Disabled'}`
   );
 
-  // Safe server-side logging (only in development)
+  
   if (isDevelopment()) {
     console.log('🔧 Server Configuration:');
     console.log(

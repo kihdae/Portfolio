@@ -132,13 +132,7 @@ export class EnhancedVisualizerEngine {
     this.canvas.style.height = '100%';
     this.canvas.style.display = 'block';
 
-    console.log('Enhanced Canvas setup:', {
-      width: finalWidth,
-      height: finalHeight,
-      dpr,
-      parentWidth: parentRect.width,
-      parentHeight: parentRect.height,
-    });
+   
   }
 
   private initializeGridState(): void {

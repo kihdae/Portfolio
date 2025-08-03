@@ -148,57 +148,54 @@ export const getThemeDebugInfo = (): DebugInfo => {
 
 
 export const logThemeDebugInfo = (): void => {
-  const debugInfo = getThemeDebugInfo();
+//   const debugInfo = getThemeDebugInfo();
 
-  console.group('🎨 Theme Debug Information');
-  console.log('Current Theme:', debugInfo.currentTheme);
+//   console.group('🎨 Theme Debug Information');
 
-  console.group('✅ Applied Variables');
-  Object.entries(debugInfo.appliedVariables).forEach(([variable, value]) => {
-    console.log(`${variable}: ${value}`);
-  });
-  console.groupEnd();
+//   console.group('✅ Applied Variables');
+//   Object.entries(debugInfo.appliedVariables).forEach(([variable, value]) => {
+//     console.log(`${variable}: ${value}`);
+//   });
+//   console.groupEnd();
 
-  console.group('🔍 Computed Styles');
-  Object.entries(debugInfo.computedStyles).forEach(([variable, value]) => {
-    console.log(`${variable}: ${value}`);
-  });
-  console.groupEnd();
+//   console.group('🔍 Computed Styles');
+//   Object.entries(debugInfo.computedStyles).forEach(([variable, value]) => {
+//     console.log(`${variable}: ${value}`);
+//   });
+//   console.groupEnd();
 
-  console.group('⚠️ Validation Results');
-  console.log('Is Valid:', debugInfo.validationResult.isValid);
-  if (debugInfo.validationResult.missingVariables.length > 0) {
-    console.error(
-      'Missing Variables:',
-      debugInfo.validationResult.missingVariables
-    );
-  }
-  if (debugInfo.validationResult.errors.length > 0) {
-    console.error('Errors:', debugInfo.validationResult.errors);
-  }
-  if (debugInfo.validationResult.warnings.length > 0) {
-    console.warn('Warnings:', debugInfo.validationResult.warnings);
-  }
-  console.groupEnd();
+//   console.group('⚠️ Validation Results');
+//   console.log('Is Valid:', debugInfo.validationResult.isValid);
+//   if (debugInfo.validationResult.missingVariables.length > 0) {
+//     console.error(
+//       'Missing Variables:',
+//       debugInfo.validationResult.missingVariables
+//     );
+//   }
+//   if (debugInfo.validationResult.errors.length > 0) {
+//     console.error('Errors:', debugInfo.validationResult.errors);
+//   }
+//   if (debugInfo.validationResult.warnings.length > 0) {
+//     console.warn('Warnings:', debugInfo.validationResult.warnings);
+//   }
+//   console.groupEnd();
 
-  console.groupEnd();
+//   console.groupEnd();
 };
 
 
 export const initializeThemeValidation = (): void => {
-  // Validate on initial load
   setTimeout(() => {
     logThemeDebugInfo();
   }, 100);
 
-  // Listen for theme changes
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
       if (
         mutation.type === 'attributes' &&
         mutation.attributeName === 'data-theme'
       ) {
-        console.log('🎨 Theme changed, validating...');
+       
         setTimeout(() => {
           logThemeDebugInfo();
         }, 50);

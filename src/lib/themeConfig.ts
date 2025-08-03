@@ -724,7 +724,7 @@ export const themes: Record<string, ThemeConfig> = {
 export const getThemeVariables = (themeName: string): ThemeVariables => {
   const theme = themes[themeName];
   if (!theme) {
-    console.warn(`Theme "${themeName}" not found, falling back to plasma`);
+    
     return themes['plasma']?.variables || ({} as ThemeVariables);
   }
   return theme.variables;
@@ -745,12 +745,7 @@ export const applyTheme = (themeName: string): void => {
 
       document.body.setAttribute('data-theme', themeName);
 
-      if (process.env.NODE_ENV === 'development') {
-        console.log(
-          `Theme "${themeName}" applied with ${Object.keys(variables).length} variables`
-        );
-      }
-
+     
       window.dispatchEvent(
         new CustomEvent('themeChanged', {
           detail: { themeName, variables },
@@ -759,7 +754,7 @@ export const applyTheme = (themeName: string): void => {
 
       performanceUtils.monitorThemeChange(themeName, startTime);
     } catch (error) {
-      console.error('Error applying theme:', error);      
+      
       applyTheme('plasma');
     }
   });
@@ -768,7 +763,7 @@ export const applyTheme = (themeName: string): void => {
 export const validateTheme = (themeName: string): boolean => {
   const theme = themes[themeName];
   if (!theme) {
-    console.error(`Theme "${themeName}" not found`);
+    
     return false;
   }
 
@@ -784,14 +779,11 @@ export const validateTheme = (themeName: string): boolean => {
   );
 
   if (missingVariables.length > 0) {
-    console.error(
-      `Theme "${themeName}" is missing required variables:`,
-      missingVariables
-    );
+    
     return false;
   }
 
-  console.log(`Theme "${themeName}" validation passed`);
+  
   return true;
 };
 

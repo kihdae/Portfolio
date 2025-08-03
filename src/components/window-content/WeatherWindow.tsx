@@ -168,16 +168,16 @@ export default function WeatherWindow() {
 
         if (geocodeResponse.ok) {
           const geocodeData = await geocodeResponse.json();
-          console.log('Geocoding response:', geocodeData);
+         
           if (geocodeData.length > 0) {
             const location = geocodeData[0];
             cityName =
               location.name || location.local_names?.en || location.name;
             countryCode = location.country || 'US';
-            console.log('Resolved location:', { cityName, countryCode });
+          
           }
         } else {
-          console.warn('Geocoding failed, trying alternative method');
+         
           // Try alternative geocoding using a free service
           try {
             const altGeocodeResponse = await fetch(
@@ -185,7 +185,7 @@ export default function WeatherWindow() {
             );
             if (altGeocodeResponse.ok) {
               const altData = await altGeocodeResponse.json();
-              console.log('Alternative geocoding response:', altData);
+             
               if (altData.address) {
                 cityName =
                   altData.address.city ||
@@ -195,18 +195,14 @@ export default function WeatherWindow() {
                   'Unknown';
                 countryCode =
                   altData.address.country_code?.toUpperCase() || 'US';
-                console.log('Alternative resolved location:', {
-                  cityName,
-                  countryCode,
-                });
+               
               }
             }
           } catch (error) {
-            console.warn('Alternative geocoding also failed:', error);
+           
           }
         }
 
-        // Then get weather data
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=imperial`
         );
@@ -260,7 +256,7 @@ export default function WeatherWindow() {
         setWeatherData(weatherData);
         setLoadingState({ isLoading: false, error: null });
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        
         setLoadingState({
           isLoading: false,
           error: 'Failed to load weather data. Please check your connection.',
@@ -268,16 +264,16 @@ export default function WeatherWindow() {
       }
     };
 
-    // Get user's location
+   
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
-          console.log('Location obtained:', { latitude, longitude });
+         
           fetchWeatherData(latitude, longitude);
         },
-        error => {
-          console.error('Geolocation error:', error);
+       () => {
+         
           setLoadingState({
             isLoading: false,
             error:

@@ -37,7 +37,6 @@ export function PowerProvider({ children }: { children: ReactNode }) {
   };
 
   const handleRestart = () => {
-    console.log('Initiating restart sequence...');
     setIsRestarting(true);
     setRestartProgress(0);
     setRestartMessage('System Restarting...');
@@ -67,7 +66,7 @@ export function PowerProvider({ children }: { children: ReactNode }) {
           setTimeout(updateRestartState, step!.delay);
         } else {
           setTimeout(() => {
-            console.log('Restart sequence completed');
+            
             setIsRestarting(false);
             setRestartMessage('');
             setRestartProgress(0);

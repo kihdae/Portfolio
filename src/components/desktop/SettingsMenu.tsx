@@ -34,7 +34,7 @@ export default function SettingsMenu({ isOpen, onClose }: SettingsMenuProps) {
 
   const handleShowThemeInfo = () => {
     const debugInfo = getThemeDebugInfo();
-    console.log('🎨 Current Theme Information:', debugInfo);
+   
     alert(
       `Current Theme: ${debugInfo.currentTheme}\nApplied Variables: ${debugInfo.validationResult.appliedVariables.length}\nMissing Variables: ${debugInfo.validationResult.missingVariables.length}\nCheck console for detailed information.`
     );
