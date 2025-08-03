@@ -815,7 +815,7 @@ export default function SpotifyPlayer({
               </div>
 
               <div
-                className='text-[var(--color-text-secondary)] text-sm leading-relaxed'
+                className='text-[var(--color-text-secondary)] text-sm leading-relaxed flex-1'
                 draggable={false}
                 onDragStart={e => e.preventDefault()}
               >
@@ -827,10 +827,10 @@ export default function SpotifyPlayer({
 
             <div className='w-3/5 flex flex-col'>
               <div
-                className='flex-1 min-h-[500px] mb-6 relative border border-[var(--color-border)] rounded-lg overflow-hidden visualizer-container'
+                className='flex-1 min-h-[700px] mb-6 relative border border-[var(--color-border)] rounded-lg overflow-hidden visualizer-container'
                 style={{
                   flexShrink: 0,
-                  flexGrow: 0,
+                  flexGrow: 1,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
