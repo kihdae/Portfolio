@@ -101,7 +101,7 @@ function SkillsWindowClient() {
             Technical skills and professional competencies
           </p>
           <DeploymentEffect
-            text="I update these every quarter of the year! (Click to apply & swipe to view more)"
+            text="I update these every quarter of the year!"
             className='text-xl font-bold text-[var(--color-text-secondary)] mt-2 mb-2 text-center'
           />
         </div>
