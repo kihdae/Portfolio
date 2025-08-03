@@ -120,7 +120,7 @@ class PerformanceMonitor {
     this.sendToAnalytics('performance', this.metrics);
     
     if (process.env.NODE_ENV === 'development') {
-      console.log('Performance Metrics:', this.metrics);
+     
     }
   }
 

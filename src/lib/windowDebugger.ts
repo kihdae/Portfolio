@@ -33,7 +33,7 @@ export function logWindowMetrics(
 
     const rect = windowElement.getBoundingClientRect();
 
-    const computedStyle = window.getComputedStyle(windowElement);
+    // const computedStyle = window.getComputedStyle(windowElement);
 
     const metrics: WindowMetrics = {
       x: rect.x,
@@ -45,22 +45,22 @@ export function logWindowMetrics(
       windowTitle: windowName,
     };
 
-    const formattedOutput = {
-      window: windowName,
-      position: { x: Math.round(rect.x), y: Math.round(rect.y) },
-      size: { width: Math.round(rect.width), height: Math.round(rect.height) },
-      computed: {
-        transform: computedStyle.transform,
-        zIndex: computedStyle.zIndex,
-        opacity: computedStyle.opacity,
-      },
-    };
+    // const formattedOutput = {
+    //   window: windowName,
+    //   position: { x: Math.round(rect.x), y: Math.round(rect.y) },
+    //   size: { width: Math.round(rect.width), height: Math.round(rect.height) },
+    //   computed: {
+    //     transform: computedStyle.transform,
+    //     zIndex: computedStyle.zIndex,
+    //     opacity: computedStyle.opacity,
+    //   },
+    // };
 
-    console.log(`📊 ${windowName} Window Metrics:`, formattedOutput);
+   
 
     return metrics;
-  } catch (error) {
-    console.error(`❌ Error logging ${windowName} window metrics:`, error);
+  } catch (error: any) {
+   
     return null;
   }
 }
@@ -88,7 +88,7 @@ export function logAllWindowMetrics(
 ): WindowMetrics[] {
   const results: WindowMetrics[] = [];
 
-  console.group('🔍 All Window Metrics');
+  
 
   const experienceMetrics = logExperienceWindowMetrics(options);
   if (experienceMetrics) results.push(experienceMetrics);
@@ -110,7 +110,7 @@ export function startWindowMonitoring(
   const interval = options.interval || 1000; // Default to 1 second
   let intervalId: NodeJS.Timeout | null = null;
 
-  console.log(`🚀 Starting window monitoring (interval: ${interval}ms)`);
+  
 
   const monitor = () => {
     logAllWindowMetrics({ ...options, verbose: false });
@@ -123,7 +123,7 @@ export function startWindowMonitoring(
   return () => {
     if (intervalId) {
       clearInterval(intervalId);
-      console.log('🛑 Window monitoring stopped');
+      
     }
   };
 }
@@ -203,7 +203,7 @@ export function extractMetricsForState(metrics: WindowMetrics): {
   };
 }
 
-  
+
 if (typeof window !== 'undefined') {
   (window as any).windowDebugger = {
     logExperienceWindowMetrics,

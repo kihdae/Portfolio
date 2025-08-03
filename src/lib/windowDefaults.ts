@@ -68,7 +68,7 @@ export function updateWindowDefaults(
   defaults: WindowDefaults
 ): void {
   WINDOW_DEFAULTS[windowType] = defaults;
-  console.log(`Updated defaults for ${windowType}:`, defaults);
+  
 }
 
 export function updateDefaultsFromMetrics(
@@ -80,7 +80,7 @@ export function updateDefaultsFromMetrics(
     size: { width: metrics.width, height: metrics.height },
   };
   updateWindowDefaults(windowType, newDefaults);
-  console.log(`Updated ${windowType} defaults from metrics:`, newDefaults);
+  
 }
 
 export function getAllWindowDefaults(): WindowDefaultsConfig {
@@ -88,7 +88,7 @@ export function getAllWindowDefaults(): WindowDefaultsConfig {
 }
 
 export function resetWindowDefaults(): void {
-  console.log('Window defaults reset to original values');
+  
 }
 
 export default WINDOW_DEFAULTS;

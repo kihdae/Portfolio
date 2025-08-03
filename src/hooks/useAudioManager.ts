@@ -614,10 +614,7 @@ export function useAudioManager(): AudioManagerReturn {
           completeLoading();
         }
       } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          console.log(
-            'Playback was interrupted, this is normal during track changes'
-          );
+          if (error instanceof Error && error.name === 'AbortError') {
         } else {
           failLoading('Playback failed');
           throw error;

@@ -229,25 +229,15 @@ export default function DesktopPage() {
 
   const handleWindowMinimize = useCallback(
     (id: string) => {
-      console.log('Desktop page handleWindowMinimize called for:', id);
-      console.log('Current windows before minimize:', windows);
-      console.log(
-        'Current minimizedWindows before minimize:',
-        minimizedWindows
-      );
+     
 
       setWindows(prev => {
         const windowToMinimize = prev.find(w => w.id === id);
         if (!windowToMinimize) return prev;
 
-        console.log('Minimizing window:', windowToMinimize);
 
         setMinimizedWindows(current => {
           if (!current.some(minW => minW.id === id)) {
-            console.log('Adding to minimizedWindows:', {
-              ...windowToMinimize,
-              isMinimized: true,
-            });
             return [...current, { ...windowToMinimize, isMinimized: true }];
           }
           return current;
@@ -259,7 +249,6 @@ export default function DesktopPage() {
           }
           return w;
         });
-        console.log('Updated windows after minimize:', updatedWindows);
         return updatedWindows;
       });
 
@@ -294,20 +283,16 @@ export default function DesktopPage() {
 
   const handleIconSelect = useCallback(
     (type: string, name: string) => {
-      console.log('Desktop icon clicked:', type, name);
       const existingWindow = windows.find(w => w.type === type);
       const existingMinimizedWindow = minimizedWindows.find(
         w => w.type === type
       );
 
       if (existingWindow && !existingWindow.isMinimized) {
-        console.log('Focusing existing window:', existingWindow.id);
         setActiveWindow(existingWindow.id);
       } else if (existingMinimizedWindow) {
-        console.log('Restoring minimized window:', existingMinimizedWindow.id);
         handleWindowClick(existingMinimizedWindow.id);
       } else {
-        console.log('Opening new window:', type);
         handleWindowOpen(type, name);
       }
       setShowStartMenu(false);

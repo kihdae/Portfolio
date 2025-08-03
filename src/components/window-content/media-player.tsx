@@ -88,7 +88,6 @@ export default function SpotifyPlayer({
       audioManager.audioContext &&
       audioManager.audioContext.state === 'suspended'
     ) {
-      console.log('Player minimized, forcing audio context resume');
       audioManager.forceResumeAudioContext();
     }
   }, [minimized, audioManager]);
@@ -195,7 +194,7 @@ export default function SpotifyPlayer({
       setVisualParams(perfectPreset.visualParameters);
       setAudioMapping(perfectPreset.audioMapping);
       setCurrentPreset(perfectPreset);
-      console.log(`Loaded perfect preset for ${type}:`, perfectPreset.name);
+     
     }
   }, []);
 
@@ -207,10 +206,7 @@ export default function SpotifyPlayer({
       setAudioMapping(defaultPreset.audioMapping);
       setCurrentPreset(defaultPreset);
       setVisualizerInitialized(true);
-      console.log(
-        'Visualizer initialized with default preset:',
-        defaultPreset.name
-      );
+     
     }
   }, []);
 
@@ -246,7 +242,7 @@ export default function SpotifyPlayer({
 
     const handlePause = (e: Event) => {
       if (isPlaying) {
-        console.log('Preventing pause in minimized state');
+       
         e.preventDefault();
         audioElement.play().catch(console.error);
       }
@@ -315,13 +311,13 @@ export default function SpotifyPlayer({
             ? formattedJazzTracks
             : formattedCodeNationTracks;
         if (currentTracks[0]) {
-          setSource(currentTracks[0].url).catch(error => {
-            console.error('Error preloading first track:', error);
+          setSource(currentTracks[0].url).catch(() => {
+           
             setError('Failed to load audio file');
           });
         }
-      } catch (error) {
-        console.error('Error loading tracks:', error);
+      } catch (error: any) {
+       
         setError('Failed to load playlist');
       }
     };
@@ -398,39 +394,34 @@ export default function SpotifyPlayer({
     async (trackIndex: number = currentTrackIndex) => {
       try {
         setError(null); // Clear any previous errors
-        console.log('handlePlayPause called:', {
-          trackIndex,
-          currentTrackIndex,
-          isPlaying,
-        });
+
 
         if (trackIndex !== currentTrackIndex) {
-          console.log('Switching to new track:', trackIndex);
+         
           setCurrentTrackIndex(trackIndex);
           const track = currentPlaylistData!.tracks[trackIndex];
-          console.log('Loading track:', track!.title, track!.url);
+         
 
           // Set loading state immediately
-          console.log('Setting audio source...');
+         
           await setSource(track!.url);
 
-          console.log('Initializing visualizer...');
+         
           initializeVisualizer();
 
-          console.log('Starting playback...');
+         
           await play();
-          console.log('Playback started successfully');
+          
         } else {
           if (isPlaying) {
-            console.log('Pausing playback...');
             pause();
           } else {
-            console.log('Resuming playback...');
+           
             await play();
           }
         }
       } catch (err) {
-        console.error('Playback error:', err);
+       
         setError(err instanceof Error ? err.message : 'Playback error');
       }
     },
@@ -449,7 +440,7 @@ export default function SpotifyPlayer({
     async (newPlaylist: string) => {
       if (newPlaylist === currentPlaylist) return;
 
-      console.log('Changing playlist from', currentPlaylist, 'to', newPlaylist);
+     
       setIsChangingPlaylist(true);
       pause();
 
@@ -462,32 +453,28 @@ export default function SpotifyPlayer({
       setError(null);
 
       // Auto-initialize visualizer when playlist changes (always re-initialize for new context)
-      console.log('Initializing visualizer for new playlist...');
+     
       initializeVisualizer();
 
       const newPlaylistData = playlists[newPlaylist];
 
       if (!newPlaylistData || newPlaylistData.tracks.length === 0) {
-        console.warn(`Playlist "${newPlaylist}" is empty or not found.`);
+       
         await setSource('');
       } else {
         const firstTrack = newPlaylistData.tracks[0];
-        console.log(
-          'Loading first track of new playlist:',
-          firstTrack!.title,
-          firstTrack!.url
-        );
+       
         try {
           await setSource(firstTrack!.url);
-          console.log('First track loaded successfully');
+         
         } catch (error) {
-          console.error('Error loading first track of new playlist:', error);
+         
           setError('Failed to load audio for the new playlist.');
         }
       }
 
       setIsChangingPlaylist(false);
-      console.log('Playlist change completed');
+    
     },
     [playlists, setSource, pause, currentPlaylist, initializeVisualizer]
   );

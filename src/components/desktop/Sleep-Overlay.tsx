@@ -16,12 +16,10 @@ export default function SleepOverlay({ onWake }: SleepOverlayProps) {
 
   const initiateWake = useCallback(() => {
     if (isWaking) return;
-    console.log('Initiating wake sequence...');
     setIsWaking(true);
     setFadeOut(true);
 
     setTimeout(() => {
-      console.log('Executing wake callbacks...');
       handleWake();
       onWake();
     }, 500);
@@ -33,7 +31,7 @@ export default function SleepOverlay({ onWake }: SleepOverlayProps) {
       if (!['Control', 'Alt', 'Shift', 'Meta'].includes(e.key)) {
         setKeyPressCount(prev => {
           const newCount = prev + 1;
-          console.log(`Key press count: ${newCount}/${requiredKeyPresses}`);
+         
           if (newCount >= requiredKeyPresses) {
             initiateWake();
           }
