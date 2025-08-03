@@ -62,10 +62,7 @@ export default function EnhancedMixerSettings({
     { id: 'waveform', label: 'Waveform' },
     { id: 'particle-system', label: 'Particle System' },
     { id: 'frequency-bars', label: 'Frequency Bars' },
-    { id: 'liquid-wave', label: 'Liquid Wave' },
-    { id: 'matrix-rain', label: 'Matrix Rain' },
-    { id: 'pulsing-orb', label: 'Pulsing Orb' },
-    { id: 'dynamic-equalizer-grid', label: 'Dynamic Equalizer Grid' },
+    { id: 'liquid-wave', label: 'Liquid Wave' }
   ];
 
   const saveCurrentPreset = () => {
@@ -74,15 +71,15 @@ export default function EnhancedMixerSettings({
   };
 
   const loadSelectedPreset = () => {
-    if (selectedPreset !== null) {
-      onLoadPreset(savedPresets[selectedPreset]);
+    if (selectedPreset !== null && savedPresets[selectedPreset]) {
+      onLoadPreset(savedPresets[selectedPreset]!);
       setSelectedPreset(null); 
     }
   };
 
   const deleteSelectedPreset = () => {
     if (selectedPreset !== null) {
-      onDeletePreset(savedPresets[selectedPreset].id);
+      onDeletePreset(savedPresets[selectedPreset]?.id || '');
       setSelectedPreset(null); 
     }
   };
@@ -376,54 +373,23 @@ export default function EnhancedMixerSettings({
                       </div>
                     </div>
 
-                    <div className='mt-6'>
-                      <h3 className='text-sm font-semibold text-[var(--color-text-primary)] border-b border-[var(--color-border)] pb-2'>
-                        Performance Metrics
-                      </h3>
+                      <div className='mt-6'>
+                        
+                        <div className='mt-4 grid grid-cols-2 gap-4'>
+                          <div className='bg-[var(--color-surface-primary)]/50 p-4 rounded-lg border border-[var(--color-border)]'>
+                          
 
-                      <div className='mt-4 grid grid-cols-2 gap-4'>
-                        <div className='bg-[var(--color-surface-primary)]/50 p-4 rounded-lg border border-[var(--color-border)]'>
-                          <div className='text-sm text-[var(--color-text-secondary)] mb-1'>
-                            FPS
-                          </div>
-                          <div className='text-2xl font-semibold text-[var(--color-text-primary)]'>
-                            {performanceMetrics.fps}
-                          </div>
-                        </div>
-                        <div className='bg-[var(--color-surface-primary)]/50 p-4 rounded-lg border border-[var(--color-border)]'>
-                          <div className='text-sm text-[var(--color-text-secondary)] mb-1'>
-                            CPU Usage
-                          </div>
-                          <div className='text-2xl font-semibold text-[var(--color-text-primary)]'>
-                            {Math.round(performanceMetrics.cpuUsage * 100)}%
-                          </div>
-                        </div>
-                        <div className='bg-[var(--color-surface-primary)]/50 p-4 rounded-lg border border-[var(--color-border)]'>
-                          <div className='text-sm text-[var(--color-text-secondary)] mb-1'>
-                            Memory
-                          </div>
-                          <div className='text-2xl font-semibold text-[var(--color-text-primary)]'>
-                            {Math.round(performanceMetrics.memoryUsage)}MB
-                          </div>
-                        </div>
-                        <div className='bg-[var(--color-surface-primary)]/50 p-4 rounded-lg border border-[var(--color-border)]'>
-                          <div className='text-sm text-[var(--color-text-secondary)] mb-1'>
-                            Render Time
-                          </div>
-                          <div className='text-2xl font-semibold text-[var(--color-text-primary)]'>
-                            {performanceMetrics.renderTime.toFixed(1)}ms
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {activeTab === 'presets' && (
-                  <div>
-                    <div className='flex items-center justify-between mb-4'>
-                      <h3 className='text-sm font-semibold text-[var(--color-text-primary)]'>
-                        Enhanced Saved Presets
+                  {activeTab === 'presets' && (
+                    <div>
+                      <div className='flex items-center justify-between mb-4'>
+                        <h3 className='text-sm font-semibold text-[var(--color-text-primary)]'>
+                          Enhanced Saved Presets
                       </h3>
                       <button
                         onClick={saveCurrentPreset}
@@ -501,7 +467,6 @@ function EnhancedVisualTab({
     <div className='space-y-8'>
       <div>
         <label className='block text-sm font-semibold text-purple-200 mb-3'>
-          Enhanced Visualizer Type
         </label>
         <Select
           value={visualizerType}
@@ -893,38 +858,6 @@ function EnhancedPerformanceTab({
 }) {
   return (
     <div className='space-y-8'>
-      <h3 className='text-sm font-semibold text-purple-200 border-b border-purple-400/20 pb-2'>
-        Enhanced Real-time Metrics
-      </h3>
-      <div className='grid grid-cols-2 gap-6'>
-        <div className='bg-[#201C33]/50 p-4 rounded-lg border border-purple-400/20'>
-          <div className='text-sm text-purple-300 mb-1'>FPS</div>
-          <div className='text-2xl font-semibold text-purple-200'>
-            {performanceMetrics.fps}
-          </div>
-        </div>
-        <div className='bg-[#201C33]/50 p-4 rounded-lg border border-purple-400/20'>
-          <div className='text-sm text-purple-300 mb-1'>CPU Usage</div>
-          <div className='text-2xl font-semibold text-purple-200'>
-            {Math.round(performanceMetrics.cpuUsage * 100)}%
-          </div>
-        </div>
-      </div>
-
-      <div className='grid grid-cols-2 gap-6'>
-        <div className='bg-[#201C33]/50 p-4 rounded-lg border border-purple-400/20'>
-          <div className='text-sm text-purple-300 mb-1'>Memory</div>
-          <div className='text-2xl font-semibold text-purple-200'>
-            {Math.round(performanceMetrics.memoryUsage)}MB
-          </div>
-        </div>
-        <div className='bg-[#201C33]/50 p-4 rounded-lg border border-purple-400/20'>
-          <div className='text-sm text-purple-300 mb-1'>Render Time</div>
-          <div className='text-2xl font-semibold text-purple-200'>
-            {performanceMetrics.renderTime.toFixed(1)}ms
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

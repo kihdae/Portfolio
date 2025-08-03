@@ -21,7 +21,6 @@ export class EnhancedVisualizerEngine {
     audioLatency: 0,
   };
 
-  // Current configuration
   private currentType: VisualizerType = 'spectrum-circle';
   private visualParams: VisualParameters;
   private audioMapping: AudioMapping;
@@ -30,7 +29,6 @@ export class EnhancedVisualizerEngine {
   private smoothingBuffer: Float32Array | null = null;
   private smoothingBufferSize: number = 0;
 
-  // Theme integration with caching
   private useThemeColors = true;
   private themeOpacity = 1.0;
   private cachedThemeColors: {
@@ -46,7 +44,6 @@ export class EnhancedVisualizerEngine {
   };
   private themeCacheValid = false;
 
-  // Particle system state
   private particles: Array<{
     x: number;
     y: number;
@@ -59,7 +56,6 @@ export class EnhancedVisualizerEngine {
     alpha: number;
   }> = [];
 
-  // Pulsing orb state
   private orbState = {
     size: 50,
     targetSize: 50,
@@ -68,7 +64,6 @@ export class EnhancedVisualizerEngine {
     rotation: 0,
   };
 
-  // Dynamic equalizer grid state
   private gridState: Array<
     Array<{
       value: number;
@@ -85,24 +80,18 @@ export class EnhancedVisualizerEngine {
     }
     this.ctx = ctx;
 
-    // Initialize with default parameters
     this.visualParams = this.getDefaultVisualParameters();
     this.audioMapping = this.getDefaultAudioMapping();
 
-    // Set up canvas
     this.setupCanvas();
 
-    // Initialize theme colors
     this.updateThemeColors();
 
-    // Initialize grid state for dynamic equalizer
     this.initializeGridState();
 
-    // Set up ResizeObserver for dynamic resizing
     this.setupResizeObserver();
   }
 
-  // Setup ResizeObserver for dynamic resizing
   private resizeObserver: ResizeObserver | null = null;
 
   private setupResizeObserver(): void {
@@ -120,35 +109,28 @@ export class EnhancedVisualizerEngine {
     this.resizeObserver.observe(parent);
   }
 
-  // Setup canvas with proper resolution and dynamic sizing
   private setupCanvas(): void {
     const dpr = window.devicePixelRatio || 1;
     const parent = this.canvas.parentElement;
 
-    // Use ResizeObserver for more reliable sizing
     if (!parent) {
       console.warn('Canvas has no parent element');
       return;
     }
 
-    // Get parent dimensions with fallback
     const parentRect = parent.getBoundingClientRect();
     const rect = this.canvas.getBoundingClientRect();
 
-    // Use parent dimensions as primary source, fallback to canvas rect
     let width = parentRect.width || rect.width || 800;
     let height = parentRect.height || rect.height || 600;
 
-    // Ensure minimum dimensions
     const finalWidth = Math.max(width, 100);
     const finalHeight = Math.max(height, 100);
 
-    // Set canvas dimensions with proper scaling
     this.canvas.width = finalWidth * dpr;
     this.canvas.height = finalHeight * dpr;
     this.ctx.scale(dpr, dpr);
 
-    // Set CSS dimensions to match parent
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
     this.canvas.style.display = 'block';
@@ -162,7 +144,6 @@ export class EnhancedVisualizerEngine {
     });
   }
 
-  // Initialize grid state for dynamic equalizer
   private initializeGridState(): void {
     const gridCols = 32;
     const gridRows = 16;
@@ -171,7 +152,7 @@ export class EnhancedVisualizerEngine {
     for (let row = 0; row < gridRows; row++) {
       this.gridState[row] = [];
       for (let col = 0; col < gridCols; col++) {
-        this.gridState[row][col] = {
+        this.gridState[row]![col] = {
           value: 0,
           targetValue: 0,
           brightness: 0,
@@ -180,7 +161,6 @@ export class EnhancedVisualizerEngine {
     }
   }
 
-  // Start visualization
   start(): void {
     if (this.animationFrameId) return;
     this.lastFrameTime = performance.now();
@@ -188,7 +168,6 @@ export class EnhancedVisualizerEngine {
     this.animate();
   }
 
-  // Stop visualization
   stop(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
@@ -196,7 +175,6 @@ export class EnhancedVisualizerEngine {
     }
   }
 
-  // Cleanup resources
   destroy(): void {
     this.stop();
     if (this.resizeObserver) {
@@ -209,42 +187,35 @@ export class EnhancedVisualizerEngine {
     }
   }
 
-  // Resize canvas when container changes with debouncing
   private resizeTimeout: number | null = null;
 
   resize(): void {
-    // Debounce resize calls to prevent excessive updates
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout);
     }
 
     this.resizeTimeout = setTimeout(() => {
       this.setupCanvas();
-      this.initializeGridState(); // Reinitialize grid on resize
+      this.initializeGridState();
 
-      // Force a re-render after resize
       if (this.animationFrameId) {
         this.renderVisualizer();
       }
     }, 100) as any;
   }
 
-  // Main animation loop
   private animate(): void {
     const currentTime = performance.now();
     const deltaTime = currentTime - this.lastFrameTime;
 
-    // Update FPS calculation
     this.frameCount++;
     if (this.frameCount % 60 === 0) {
       this.fps = 1000 / ((deltaTime * 60) / this.frameCount);
       this.performanceMetrics.fps = this.fps;
     }
 
-    // Clear canvas
     this.clearCanvas();
 
-    // Always render visualizer
     try {
       this.renderVisualizer();
     } catch (error) {
@@ -252,13 +223,11 @@ export class EnhancedVisualizerEngine {
       this.renderFallbackVisualizer();
     }
 
-    // Update performance metrics
     this.updatePerformanceMetrics(deltaTime);
     this.lastFrameTime = currentTime;
     this.animationFrameId = requestAnimationFrame(() => this.animate());
   }
 
-  // Clear canvas with theme-aware background
   private clearCanvas(): void {
     if (this.useThemeColors) {
       this.ctx.fillStyle = this.cachedThemeColors.background;
@@ -268,7 +237,6 @@ export class EnhancedVisualizerEngine {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  // Render the current visualizer type
   private renderVisualizer(): void {
     switch (this.currentType) {
       case 'spectrum-circle':
@@ -300,7 +268,6 @@ export class EnhancedVisualizerEngine {
     }
   }
 
-  // Enhanced frequency bars with crisp, distinct rendering
   private renderEnhancedFrequencyBars(): void {
     const totalBars = Math.floor(
       this.canvas.width /
@@ -311,28 +278,24 @@ export class EnhancedVisualizerEngine {
 
     if (totalBars <= 0) return;
 
-    // Optimized frequency data sampling with linear interpolation
     const frequencyData = this.audioData?.frequencyData;
     const sampleCount = frequencyData?.length || 0;
 
     for (let i = 0; i < totalBars; i++) {
       let value = 0.25;
 
-      // Use optimized audio data sampling
       if (frequencyData && sampleCount > 0) {
-        // Linear interpolation for better frequency distribution
         const exactIndex = (i / totalBars) * sampleCount;
         const lowerIndex = Math.floor(exactIndex);
         const upperIndex = Math.min(lowerIndex + 1, sampleCount - 1);
         const fraction = exactIndex - lowerIndex;
 
-        const lowerValue = frequencyData[lowerIndex] / 255;
-        const upperValue = frequencyData[upperIndex] / 255;
+        const lowerValue = (frequencyData[lowerIndex] || 0) / 255;
+        const upperValue = (frequencyData[upperIndex] || 0) / 255;
         value = lowerValue * (1 - fraction) + upperValue * fraction;
 
-        // Apply enhanced smoothing
         value = this.smoothValue(value, i);
-        value = Math.max(value, 0.1); // Reduced minimum for better dynamic range
+        value = Math.max(value, 0.1);
       } else {
         const time = Date.now() * 0.001;
         value =
@@ -341,22 +304,19 @@ export class EnhancedVisualizerEngine {
           0.08 * Math.sin(time * 2 + i * 0.05);
       }
 
-      // Apply optimized audio mapping
       const mappedValue = this.applyAudioMapping(value, i, totalBars);
       const height = Math.max(
         mappedValue * this.canvas.height * this.visualParams.barHeight,
         4
-      ); // Reduced minimum height
+      );
 
       const x = i * (barWidth + spacing);
       const y = this.canvas.height - height;
 
-      // Draw crisp, distinct bar with enhanced effects
       this.drawCrispBar(x, y, barWidth, height, value, i);
     }
   }
 
-  // Draw crisp, distinct frequency bar
   private drawCrispBar(
     x: number,
     y: number,
@@ -365,13 +325,11 @@ export class EnhancedVisualizerEngine {
     intensity: number,
     index: number
   ): void {
-    // Ensure pixel-perfect rendering
     const pixelX = Math.round(x);
     const pixelY = Math.round(y);
     const pixelWidth = Math.round(width);
     const pixelHeight = Math.round(height);
 
-    // Create gradient for depth
     const gradient = this.ctx.createLinearGradient(
       pixelX,
       pixelY,
@@ -382,17 +340,14 @@ export class EnhancedVisualizerEngine {
     gradient.addColorStop(0.7, this.cachedThemeColors.secondary);
     gradient.addColorStop(1, this.cachedThemeColors.accent);
 
-    // Apply glow effect if enabled
     if (this.visualParams.glowIntensity > 0) {
       this.ctx.shadowColor = this.cachedThemeColors.primary;
       this.ctx.shadowBlur = this.visualParams.glowIntensity * 20 * intensity;
     }
 
-    // Main bar - crisp and distinct
     this.ctx.fillStyle = gradient;
     this.ctx.fillRect(pixelX, pixelY, pixelWidth, pixelHeight);
 
-    // Add highlight for 3D effect
     this.ctx.globalAlpha = 0.3 * intensity;
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
     this.ctx.fillRect(
@@ -403,7 +358,6 @@ export class EnhancedVisualizerEngine {
     );
     this.ctx.globalAlpha = 1;
 
-    // Add reflection if enabled
     if (this.visualParams.reflectionOpacity > 0) {
       this.ctx.globalAlpha =
         this.visualParams.reflectionOpacity * intensity * 0.5;
@@ -417,26 +371,21 @@ export class EnhancedVisualizerEngine {
       this.ctx.globalAlpha = 1;
     }
 
-    // Reset effects
     this.ctx.shadowBlur = 0;
   }
 
-  // Enhanced particle system with smooth, artifact-free movement
   private renderEnhancedParticleSystem(): void {
-    // Update existing particles
     this.particles = this.particles.filter(particle => {
       particle.x += particle.vx * this.visualParams.animationSpeed;
       particle.y += particle.vy * this.visualParams.animationSpeed;
       particle.vy += this.visualParams.particleGravity;
-      particle.life -= 0.016; // 60fps
+      particle.life -= 0.016;
 
-      // Update alpha based on life
       particle.alpha = particle.life / particle.maxLife;
 
       return particle.life > 0;
     });
 
-    // Generate new particles based on audio data
     let particleCount = this.visualParams.particleCount;
     if (this.audioData) {
       const audioIntensity =
@@ -446,7 +395,6 @@ export class EnhancedVisualizerEngine {
       );
     }
 
-    // Add new particles
     while (this.particles.length < Math.min(particleCount, 200)) {
       const audioIntensity = this.audioData
         ? (this.audioData.frequencyData?.[
@@ -472,18 +420,15 @@ export class EnhancedVisualizerEngine {
       });
     }
 
-    // Render particles with smooth effects
     this.particles.forEach(particle => {
       const size = particle.size * (0.5 + particle.alpha * 0.5);
 
-      // Apply glow effect
       if (this.visualParams.glowIntensity > 0) {
         this.ctx.shadowColor = particle.color;
         this.ctx.shadowBlur =
           this.visualParams.glowIntensity * 15 * particle.alpha;
       }
 
-      // Apply bloom effect
       if (this.visualParams.bloomIntensity > 0) {
         this.ctx.globalAlpha =
           this.visualParams.bloomIntensity * particle.alpha * 0.5;
@@ -493,14 +438,12 @@ export class EnhancedVisualizerEngine {
         this.ctx.fill();
       }
 
-      // Main particle
       this.ctx.globalAlpha = particle.alpha;
       this.ctx.fillStyle = particle.color;
       this.ctx.beginPath();
       this.ctx.arc(particle.x, particle.y, size, 0, Math.PI * 2);
       this.ctx.fill();
 
-      // Reset effects
       this.ctx.shadowBlur = 0;
       this.ctx.globalAlpha = 1;
     });
@@ -546,7 +489,7 @@ export class EnhancedVisualizerEngine {
 
     for (let i = 0; i < frequencyData.length; i++) {
       const angle = (i / frequencyData.length) * Math.PI * 2;
-      let value = frequencyData[i] / 255;
+      let value = (frequencyData[i] || 0) / 255;
 
       if (i < frequencyData.length * 0.3) {
         value *= this.audioMapping.lowFreqSensitivity;
@@ -648,7 +591,7 @@ export class EnhancedVisualizerEngine {
           const freqIndex = Math.floor(
             (col / gridCols) * this.audioData.frequencyData.length
           );
-          const freqValue = this.audioData.frequencyData[freqIndex] / 255;
+          const freqValue = (this.audioData.frequencyData[freqIndex] || 0) / 255;
 
           let mappedValue = freqValue;
           if (col < gridCols * 0.3) {
@@ -660,7 +603,7 @@ export class EnhancedVisualizerEngine {
           }
 
           const heightFactor = (gridRows - row) / gridRows;
-          this.gridState[row][col].targetValue = mappedValue * heightFactor;
+          this.gridState[row]![col]!.targetValue = mappedValue * heightFactor;
         }
       }
     } else {  
@@ -668,19 +611,19 @@ export class EnhancedVisualizerEngine {
       for (let row = 0; row < gridRows; row++) {
         for (let col = 0; col < gridCols; col++) {
           const wave = Math.sin(time + col * 0.1 + row * 0.05);
-          this.gridState[row][col].targetValue = (wave + 1) * 0.5;
+          this.gridState[row]![col]!.targetValue = (wave + 1) * 0.5;
         }
       }
     }
 
     for (let row = 0; row < gridRows; row++) {
       for (let col = 0; col < gridCols; col++) {
-        const cell = this.gridState[row][col];
+        const cell = this.gridState[row]![col];
 
-        cell.value += (cell.targetValue - cell.value) * 0.2;
-        cell.brightness = cell.value;
+        cell!.value += (cell!.targetValue - cell!.value) * 0.2;
+        cell!.brightness = cell!.value;
 
-        if (cell.brightness > 0.1) {
+        if (cell!.brightness > 0.1) {
           const x = col * cellWidth;
           const y = row * cellHeight;
 
@@ -694,10 +637,10 @@ export class EnhancedVisualizerEngine {
           if (this.visualParams.glowIntensity > 0) {
             this.ctx.shadowColor = color;
             this.ctx.shadowBlur =
-              this.visualParams.glowIntensity * 10 * cell.brightness;
+            this.visualParams.glowIntensity * 10 * cell!.brightness;
           }
 
-          this.ctx.globalAlpha = cell.brightness;
+          this.ctx.globalAlpha = cell!.brightness;
           this.ctx.fillStyle = color;
           this.ctx.fillRect(x + 1, y + 1, cellWidth - 2, cellHeight - 2);
         }
@@ -736,7 +679,7 @@ export class EnhancedVisualizerEngine {
 
     for (let i = 0; i < timeDomainData.length; i++) {
       const x = i * step;
-      const value = (timeDomainData[i] - 128) / 128;
+      const value = ((timeDomainData[i] || 0) - 128) / 128;
       const y = centerY + value * centerY * this.visualParams.waveAmplitude;
 
       if (i === 0) {
@@ -831,16 +774,16 @@ export class EnhancedVisualizerEngine {
       const drop = drops[i];
       const x = i * (this.visualParams.barWidth + this.visualParams.barSpacing);
 
-      drop.y +=
-        drop.speed * this.visualParams.animationSpeed * (1 + audioIntensity);
+      drop!.y +=
+        drop!.speed * this.visualParams.animationSpeed * (1 + audioIntensity);
 
-      if (drop.y > this.canvas.height) {
-        drop.y = -20;
-        drop.intensity = Math.random();
-        drop.char = String.fromCharCode(0x30a0 + Math.random() * 96);
+      if (drop!.y > this.canvas.height) {
+        drop!.y = -20;
+        drop!.intensity = Math.random();
+        drop!.char = String.fromCharCode(0x30a0 + Math.random() * 96);
       }
 
-      let alpha = drop.intensity;
+      let alpha = drop!.intensity;
       if (i < drops.length * 0.3) {
         alpha *= this.audioData?.lowFrequency || 0.5;
       } else if (i < drops.length * 0.7) {
@@ -856,13 +799,13 @@ export class EnhancedVisualizerEngine {
 
       this.ctx.globalAlpha = alpha;
       this.ctx.fillStyle = this.cachedThemeColors.primary;
-      this.ctx.fillText(drop.char, x, drop.y);
+      this.ctx.fillText(drop!.char, x, drop!.y);
 
       if (this.visualParams.reflectionOpacity > 0) {
         this.ctx.globalAlpha =
           this.visualParams.reflectionOpacity * alpha * 0.3;
         this.ctx.fillStyle = this.cachedThemeColors.accent;
-        this.ctx.fillText(drop.char, x, drop.y + 20);
+        this.ctx.fillText(drop!.char, x, drop!.y + 20);
       }
     }
 

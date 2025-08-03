@@ -41,23 +41,23 @@ export default function LoginPage() {
         const updateRestartState = () => {
           if (currentStep < restartSequence.length) {
             const step = restartSequence[currentStep];
-            setRestartProgress(step.progress);
-            setRestartMessage(step.message);
+            setRestartProgress(step?.progress || 0);
+            setRestartMessage(step?.message || '');
             currentStep++;
 
             if (currentStep < restartSequence.length) {
-              setTimeout(updateRestartState, step.delay);
+              setTimeout(updateRestartState, step?.delay || 0);
             } else {
               setTimeout(() => {
                 setIsRestarting(false);
                 setRestartMessage('');
                 setRestartProgress(0);
-              }, step.delay);
+              }, step?.delay || 0);
             }
           }
         };
 
-        setTimeout(updateRestartState, restartSequence[0].delay);
+        setTimeout(updateRestartState, restartSequence[0]?.delay || 0);
       }
     }
 

@@ -59,12 +59,12 @@ export function PowerProvider({ children }: { children: ReactNode }) {
     const updateRestartState = () => {
       if (currentStep < restartSequence.length) {
         const step = restartSequence[currentStep];
-        setRestartProgress(step.progress);
-        setRestartMessage(step.message);
+        setRestartProgress(step!.progress);
+        setRestartMessage(step!.message);
         currentStep++;
 
         if (currentStep < restartSequence.length) {
-          setTimeout(updateRestartState, step.delay);
+          setTimeout(updateRestartState, step!.delay);
         } else {
           setTimeout(() => {
             console.log('Restart sequence completed');
@@ -78,12 +78,12 @@ export function PowerProvider({ children }: { children: ReactNode }) {
             }
 
             router.push('/');
-          }, step.delay);
+          }, step!.delay);
         }
       }
     };
 
-    setTimeout(updateRestartState, restartSequence[0].delay);
+    setTimeout(updateRestartState, restartSequence[0]!.delay);
   };
 
   const handleShutdown = () => {

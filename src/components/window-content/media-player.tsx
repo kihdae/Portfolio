@@ -63,7 +63,7 @@ const defaultPlaylists: Record<string, Playlist> = {
     tracks: [],
   },
 };
-  
+
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
@@ -192,7 +192,7 @@ export default function SpotifyPlayer({
   const [savedPresets, setSavedPresets] =
     useState<VisualizerPreset[]>(defaultPresets);
   const [currentPreset, setCurrentPreset] = useState<VisualizerPreset | null>(
-    defaultPresets[0]
+    defaultPresets[0] || null
   );
   const [visualizerInitialized, setVisualizerInitialized] = useState(false);
 
@@ -217,7 +217,7 @@ export default function SpotifyPlayer({
   }, []);
 
   const initializeVisualizer = useCallback(() => {
-    const defaultPreset = defaultPresets[0];
+    const defaultPreset = defaultPresets[0] || null;
     if (defaultPreset) {
       setVisualizerType(defaultPreset.visualizerType);
       setVisualParams(defaultPreset.visualParameters);
@@ -317,11 +317,11 @@ export default function SpotifyPlayer({
         setPlaylists(prev => ({
           ...prev,
           CodeNation: {
-            ...prev.CodeNation,
+            ...prev.CodeNation!,
             tracks: formattedCodeNationTracks,
           },
           Jazz: {
-            ...prev.Jazz,
+            ...prev.Jazz!,
             tracks: formattedJazzTracks,
           },
         }));
@@ -362,24 +362,24 @@ export default function SpotifyPlayer({
         const nextIndex = playQueue[0];
         setPlayQueue(playQueue.slice(1));
         setTimeout(() => {
-          if (currentPlaylistData.tracks[nextIndex]) {
-            setCurrentTrackIndex(nextIndex);
-            setSource(currentPlaylistData.tracks[nextIndex].url).then(() =>
+          if (currentPlaylistData?.tracks[nextIndex!]) {
+            setCurrentTrackIndex(nextIndex!);
+              setSource(currentPlaylistData!.tracks[nextIndex!]!.url).then(() =>
               play()
             );
           }
         }, 100);
-      } else if (currentTrackIndex < currentPlaylistData.tracks.length - 1) {
+      } else if (currentTrackIndex < currentPlaylistData!.tracks.length - 1) {
         setTimeout(() => {
           setCurrentTrackIndex(currentTrackIndex + 1);
-          setSource(currentPlaylistData.tracks[currentTrackIndex + 1].url).then(
+          setSource(currentPlaylistData!.tracks[currentTrackIndex + 1]!.url).then(
             () => play()
           );
         }, 100);
       } else {
         setTimeout(() => {
           setCurrentTrackIndex(0);
-          setSource(currentPlaylistData.tracks[0].url).then(() => play());
+          setSource(currentPlaylistData!.tracks[0]!.url).then(() => play());
         }, 100);
       }
     };
@@ -424,14 +424,13 @@ export default function SpotifyPlayer({
         if (trackIndex !== currentTrackIndex) {
           console.log('Switching to new track:', trackIndex);
           setCurrentTrackIndex(trackIndex);
-          const track = currentPlaylistData.tracks[trackIndex];
-          console.log('Loading track:', track.title, track.url);
+          const track = currentPlaylistData!.tracks[trackIndex];
+          console.log('Loading track:', track!.title, track!.url);
 
           // Set loading state immediately
           console.log('Setting audio source...');
-          await setSource(track.url);
+          await setSource(track!.url);
 
-          // Auto-initialize visualizer when switching to a new track (always re-initialize for new track)
           console.log('Initializing visualizer...');
           initializeVisualizer();
 
@@ -492,11 +491,11 @@ export default function SpotifyPlayer({
         const firstTrack = newPlaylistData.tracks[0];
         console.log(
           'Loading first track of new playlist:',
-          firstTrack.title,
-          firstTrack.url
+          firstTrack!.title,
+          firstTrack!.url
         );
         try {
-          await setSource(firstTrack.url);
+          await setSource(firstTrack!.url);
           console.log('First track loaded successfully');
         } catch (error) {
           console.error('Error loading first track of new playlist:', error);
@@ -513,7 +512,7 @@ export default function SpotifyPlayer({
   const handleShuffle = useCallback(
     (pressed: boolean) => {
       if (pressed) {
-        const shuffled = [...Array(currentPlaylistData.tracks.length).keys()]
+        const shuffled = [...Array(currentPlaylistData!.tracks.length).keys()]
           .filter(i => i !== currentTrackIndex)
           .sort(() => Math.random() - 0.5);
         setPlayQueue(shuffled);
@@ -531,7 +530,7 @@ export default function SpotifyPlayer({
       const nextIndex = playQueue[0];
       setPlayQueue(playQueue.slice(1));
       handlePlayPause(nextIndex);
-    } else if (currentTrackIndex < currentPlaylistData.tracks.length - 1) {
+    } else if (currentTrackIndex < currentPlaylistData!.tracks.length - 1) {
       handlePlayPause(currentTrackIndex + 1);
     } else {
       handlePlayPause(0);
@@ -548,7 +547,7 @@ export default function SpotifyPlayer({
     if (currentTrackIndex > 0) {
       handlePlayPause(currentTrackIndex - 1);
     } else {
-      handlePlayPause(currentPlaylistData.tracks.length - 1);
+      handlePlayPause(currentPlaylistData!.tracks.length - 1);
     }
   }, [currentTrackIndex, currentPlaylistData, handlePlayPause]);
 

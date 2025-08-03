@@ -118,7 +118,16 @@ const experiences: Experience[] = [
 
 function ExperienceWindowClient() {
   const [selectedExperience, setSelectedExperience] = useState<Experience>(
-    experiences[0]
+    experiences[0] || {
+      id: '',
+      title: '',
+      company: '',
+      location: '',
+      startDate: '',
+      endDate: '',
+      description: '',
+      type: 'full-time',
+    }
   );
   const [carouselApi, setCarouselApi] = useState<any>(null);
   const [windowSize, setWindowSize] = useState({ width: 1200, height: 900 });
@@ -191,7 +200,7 @@ function ExperienceWindowClient() {
       'Nov',
       'Dec',
     ];
-    return `${monthNames[parseInt(month) - 1]} ${year}`;
+    return `${monthNames[parseInt(month || '0') - 1]} ${year}`;
   };
 
   const getResponsiveConfig = () => {

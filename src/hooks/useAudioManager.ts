@@ -271,7 +271,7 @@ export function useAudioManager(): AudioManagerReturn {
 
     let sum = 0;
     for (let i = lowFreqStart; i < lowFreqEnd; i++) {
-      sum += frequencyData[i];
+      sum += frequencyData[i] || 0;
     }
 
     return sum / (lowFreqEnd - lowFreqStart) / 255;
@@ -284,7 +284,7 @@ export function useAudioManager(): AudioManagerReturn {
 
     let sum = 0;
     for (let i = midFreqStart; i < midFreqEnd; i++) {
-      sum += frequencyData[i];
+      sum += frequencyData[i] || 0;
     }
 
     return sum / (midFreqEnd - midFreqStart) / 255;
@@ -297,7 +297,7 @@ export function useAudioManager(): AudioManagerReturn {
 
     let sum = 0;
     for (let i = highFreqStart; i < highFreqEnd; i++) {
-      sum += frequencyData[i];
+      sum += frequencyData[i] || 0;
     }
 
     return sum / (highFreqEnd - highFreqStart) / 255;
@@ -307,7 +307,7 @@ export function useAudioManager(): AudioManagerReturn {
     const timeDomainData = timeDomainDataRef.current;
     let sum = 0;
     for (let i = 0; i < timeDomainData.length; i++) {
-      const sample = (timeDomainData[i] - 128) / 128;
+      const sample = ((timeDomainData[i] || 0) - 128) / 128;
       sum += sample * sample;
     }
 
@@ -342,7 +342,7 @@ export function useAudioManager(): AudioManagerReturn {
     if (beatHistoryRef.current.length === 0) return 0;
 
     const currentVolume =
-      beatHistoryRef.current[beatHistoryRef.current.length - 1];
+      beatHistoryRef.current[beatHistoryRef.current.length - 1] || 0;
     const avgVolume =
       beatHistoryRef.current.reduce((a, b) => a + b, 0) /
       beatHistoryRef.current.length;
@@ -360,7 +360,7 @@ export function useAudioManager(): AudioManagerReturn {
     for (let i = 0; i < frequencyData.length; i++) {
       const frequency =
         (i * audioContextRef.current.sampleRate) / (2 * frequencyData.length);
-      const magnitude = frequencyData[i] / 255;
+      const magnitude = (frequencyData[i] || 0) / 255;
 
       weightedSum += frequency * magnitude;
       sum += magnitude;
@@ -379,12 +379,12 @@ export function useAudioManager(): AudioManagerReturn {
 
 
     for (let i = 0; i < frequencyData.length; i++) {
-      totalEnergy += frequencyData[i] / 255;
+      totalEnergy += (frequencyData[i] || 0) / 255;
     }
 
-    
+
     for (let i = 0; i < frequencyData.length; i++) {
-      cumulativeEnergy += frequencyData[i] / 255;
+      cumulativeEnergy += (frequencyData[i] || 0) / 255;
       if (cumulativeEnergy >= totalEnergy * threshold) {
         return i / frequencyData.length;
       }

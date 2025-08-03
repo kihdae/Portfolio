@@ -40,7 +40,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       let currentState = 0;
       progressInterval = setInterval(() => {
         if (currentState < loadingStates.length) {
-          const { progress, text } = loadingStates[currentState];
+          const { progress, text } = loadingStates[currentState] || { progress: 0, text: '' };
           setLoadingProgress(progress);
           setLoadingText(text);
           currentState++;
