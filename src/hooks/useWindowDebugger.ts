@@ -83,7 +83,7 @@ export function useWindowDebugger(options: UseWindowDebuggerOptions = {}) {
     if (options.autoStart && !isMonitoring) {
       const cleanup = startMonitoring();
       return cleanup;
-    }
+    } return;
   }, [options.autoStart, isMonitoring, startMonitoring]);
 
   
@@ -95,7 +95,7 @@ export function useWindowDebugger(options: UseWindowDebuggerOptions = {}) {
 
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
-    }
+    } return;
   }, [options.continuous, logAll]);
 
   return {

@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAudioManager } from '@/hooks/useAudioManager';
 import { useVolume } from '@/contexts/VolumeContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import DynamicVisualizer from './DynamicVisualizer';
 import DynamicMixerSettings from './DynamicMixerSettings';
 import AudioLoadingIndicator from './AudioLoadingIndicator';
@@ -71,22 +70,15 @@ const formatTime = (time: number) => {
 };
 
 interface SpotifyPlayerProps {
-  onMinimize?: () => void;
-  onClose?: () => void;
-  minimized?: boolean;
+  minimized?: boolean|undefined;
 }
 
 export default function SpotifyPlayer({
-  onMinimize,
-  onClose,
   minimized = false,
 }: SpotifyPlayerProps) {
-  const { theme } = useTheme();
   const {
     volume: contextVolume,
     isMuted: contextIsMuted,
-    toggleMute,
-    setVolume: setContextVolume,
   } = useVolume();
   const audioManager = useAudioManager();
 
@@ -108,7 +100,6 @@ export default function SpotifyPlayer({
     currentTime,
     duration,
     volume: audioVolume,
-    isMuted: audioIsMuted,
     isLoading,
     loadingProgress,
     loadingMessage,
@@ -180,7 +171,7 @@ export default function SpotifyPlayer({
     beatSensitivity: 2.0,
   });
 
-  const [performanceMetrics, setPerformanceMetrics] =
+  const [performanceMetrics] =
     useState<PerformanceMetrics>({
       fps: 60,
       cpuUsage: 0,
@@ -196,15 +187,7 @@ export default function SpotifyPlayer({
   );
   const [visualizerInitialized, setVisualizerInitialized] = useState(false);
 
-  const loadPerfectPreset = useCallback((type: VisualizerType) => {
-    const perfectPreset = getPerfectPresetForType(type);
-    if (perfectPreset) {
-      setVisualParams(perfectPreset.visualParameters);
-      setAudioMapping(perfectPreset.audioMapping);
-      setCurrentPreset(perfectPreset);
-      console.log(`Loaded perfect preset for ${type}:`, perfectPreset.name);
-    }
-  }, []);
+
 
   const handleVisualizerTypeChange = useCallback((type: VisualizerType) => {
     const perfectPreset = getPerfectPresetForType(type);

@@ -220,9 +220,9 @@ export default function WeatherWindow() {
         const currentWeather = data.list[0];
 
         const forecast = data.list
-          .filter((item: any, index: number) => index % 8 === 0) 
+          .filter((item: any) => item.dt % 8 === 0) 
           .slice(0, 4) 
-          .map((item: any, index: number) => {
+          .map((item: any) => {
             const date = new Date(item.dt * 1000);
             const dayNames = [
               'Today',
@@ -498,7 +498,7 @@ export default function WeatherWindow() {
               <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
                 {weatherData.forecast.map((day: any, index: number) => (
                   <motion.div
-                    key={day.day}
+                    key={`${day.day}-${index}`}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}

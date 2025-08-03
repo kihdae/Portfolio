@@ -12,8 +12,6 @@ import {
   themes,
   applyTheme,
   validateTheme,
-  getThemeDisplayName,
-  getAvailableThemes,
   type ThemeConfig,
 } from '@/lib/themeConfig';
 

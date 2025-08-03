@@ -3,10 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useVolume } from '@/contexts/VolumeContext';
 import { Volume2, VolumeX, Plus, Minus } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export default function VolumeControl() {
-  const { volume, isMuted, setVolume, toggleMute } = useVolume();
+  const { volume, isMuted, setVolume } = useVolume();
   const [showPanel, setShowPanel] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 

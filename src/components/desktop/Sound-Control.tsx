@@ -68,6 +68,7 @@ export default function WifiControl({ onClose }: WifiControlProps) {
                   }
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors duration-200 ${
                     network.connected
+
                       ? 'bg-blue-500/20 border border-blue-500/30'
                       : 'hover:bg-white/10'
                   }`}
@@ -89,9 +90,7 @@ export default function WifiControl({ onClose }: WifiControlProps) {
                       <Lock className='w-3 h-3 text-white/50' />
                     )}
                   </div>
-                  {network.connected && (
-                    <span className='text-blue-400 text-xs'>Connected</span>
-                  )}
+                  {connectedNetwork === network.name && <span className='text-blue-400 text-xs'>Connected</span>}
                 </button>
               ))}
             </div>

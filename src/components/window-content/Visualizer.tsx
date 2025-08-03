@@ -24,10 +24,6 @@ interface EnhancedAdvancedVisualizerProps {
 
 const EnhancedAdvancedVisualizer = memo(function EnhancedAdvancedVisualizer({
   isPlaying,
-  volume,
-  audioElement,
-  audioContext,
-  sourceNode,
   audioData,
   visualizerType,
   visualParams,
@@ -75,7 +71,6 @@ const EnhancedAdvancedVisualizer = memo(function EnhancedAdvancedVisualizer({
       engineRef.current.setVisualizerType(visualizerType);
       engineRef.current.setVisualParameters(visualParams);
       engineRef.current.setAudioMapping(audioMapping);
-      engineRef.current.setPlaying(isPlaying);
     };
 
     requestAnimationFrame(updateConfig);

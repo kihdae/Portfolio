@@ -13,7 +13,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [loadingText, setLoadingText] = useState('Initializing...');
   const [isComplete, setIsComplete] = useState(false);
 
-  if (isRestarting) {``
+  if (isRestarting) {
     return null;
   }
 

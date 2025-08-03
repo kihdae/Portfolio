@@ -92,7 +92,7 @@ export default function PlaylistOverlay({
               <div className='playlist-overlay-item-info'>
                 <h3 className='playlist-overlay-item-title'>{playlistName}</h3>
                 <p className='playlist-overlay-item-tracks'>
-                  {playlists[playlistName].tracks.length} tracks
+                  {playlists[playlistName]?.tracks?.length ?? 0} tracks
                 </p>
               </div>
             </motion.li>

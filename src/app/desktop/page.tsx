@@ -11,7 +11,6 @@ import RestartScreen from '@/components/desktop/Restart-Screen';
 import ShutdownScreen from '@/components/desktop/Shutdown-Screen';
 import SleepOverlay from '@/components/desktop/Sleep-Overlay';
 import { usePower } from '@/contexts/PowerContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useBackground } from '@/contexts/BackgroundContext';
 import { useSystemControls } from '@/hooks/useSystemControls';
 import type { WindowType } from '@/types/desktop';
@@ -72,7 +71,6 @@ export default function DesktopPage() {
     handleWake,
     setIsLoading,
   } = usePower();
-  const { theme } = useTheme();
   const {
     background,
     getBackgroundUrl,
@@ -85,7 +83,7 @@ export default function DesktopPage() {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [minimizedWindows, setMinimizedWindows] = useState<WindowType[]>([]);
-
+  
   const clampWindowPosition = useCallback(
     (
       position: { x: number; y: number },
@@ -318,7 +316,7 @@ export default function DesktopPage() {
   );
 
   const handleSearch = () => {
-    setShowSearch(true);
+    setShowSearch(!showSearch);
   };
 
   const getBackgroundStyle = useCallback(() => {
@@ -406,9 +404,7 @@ export default function DesktopPage() {
               isOpen={showStartMenu}
               onClose={() => setShowStartMenu(false)}
               onOpenApp={handleIconSelect}
-              onAction={action => {
-                setShowStartMenu(false);
-              }}
+              onAction={() => setShowStartMenu(false)}
             />
           )}
         </AnimatePresence>
@@ -416,7 +412,6 @@ export default function DesktopPage() {
         <AnimatePresence>
           {isSleeping && <SleepOverlay onWake={handleWake} />}
         </AnimatePresence>
-
         <AnimatePresence>
           {isBackgroundLoading && (
             <motion.div

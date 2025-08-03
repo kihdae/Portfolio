@@ -20,9 +20,6 @@ interface StartMenuProps {
 }
 
 export default function StartMenu({
-  onClose,
-  onOpenApp,
-  onAction,
   isOpen,
 }: StartMenuProps) {
   const { handleSleep, handleRestart, handleShutdown } = usePower();
@@ -196,33 +193,5 @@ export default function StartMenu({
         onClose={() => setShowSettings(false)}
       />
     </>
-  );
-}
-
-function StartMenuItem({
-  icon,
-  label,
-  onClick,
-}: {
-  icon: string;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className='flex items-center gap-3 p-2 rounded-md hover:bg-accent/10 transition-colors w-full group'
-    >
-      <Image
-        src={icon}
-        alt={label}
-        width={20}
-        height={20}
-        className='opacity-70 group-hover:opacity-90 transition-opacity'
-      />
-      <span className='text-text-secondary text-sm group-hover:text-text-primary transition-colors'>
-        {label}
-      </span>
-    </button>
   );
 }

@@ -79,14 +79,12 @@ export default function GlobalContextMenu({
   onWindowRestore,
 }: GlobalContextMenuProps) {
   const handleShowAllWindows = () => {
-    // Restore all minimized windows
     minimizedWindows.forEach(window => {
       onWindowRestore(window.id);
     });
   };
 
   const handleCloseAllWindows = () => {
-    // Close all open windows
     windows.forEach(window => {
       if (!window.isMinimized) {
         onWindowClose(window.id);
@@ -95,19 +93,16 @@ export default function GlobalContextMenu({
   };
 
   const handleOpenWindow = (type: string, title: string) => {
-    // Ignore media player (spotify) completely in context menu
     if (type === 'spotify') {
       return;
     }
 
-    // Check if window already exists and is open
     const existingWindow = windows.find(w => w.type === type && !w.isMinimized);
 
     if (existingWindow) {
       return;
     }
 
-    // Check if window is minimized
     const existingMinimizedWindow = minimizedWindows.find(w => w.type === type);
 
     if (existingMinimizedWindow) {
@@ -115,7 +110,6 @@ export default function GlobalContextMenu({
       return;
     }
 
-    // Create new window only if it doesn't exist at all
     onWindowOpen(type, title);
   };
 
@@ -134,7 +128,6 @@ export default function GlobalContextMenu({
           backdropFilter: 'blur(8px)',
         }}
       >
-        {/* Window Management */}
         <ContextMenuItem
           onClick={e => {
             e.preventDefault();
@@ -184,8 +177,7 @@ export default function GlobalContextMenu({
         <ContextMenuSeparator
           style={{ backgroundColor: 'var(--color-border)' }}
         />
-
-        {/* Desktop Applications */}
+  
         <div
           className='px-2 py-1.5 text-xs font-medium'
           style={{ color: 'var(--color-text-secondary)' }}

@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { FolderGit2 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useState, useEffect } from 'react';

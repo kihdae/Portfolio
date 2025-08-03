@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 interface AnimatedTrackInfoProps {
   title: string;
@@ -16,6 +16,7 @@ export function AnimatedTrackInfo({
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   useEffect(() => {
+      
     const container = containerRef.current;
     const text = textRef.current;
 
@@ -29,9 +30,10 @@ export function AnimatedTrackInfo({
       window.addEventListener('resize', checkOverflow);
       return () => window.removeEventListener('resize', checkOverflow);
     }
+    return;
   }, [title]);
 
-  const animationClassName = isPlaying && isOverflowing ? 'animate-slide' : '';
+  const animationClassName = isPlaying && isOverflowing ? 'animate-slide-elegant' : '';
 
   return (
     <div className='flex flex-col w-full'>
@@ -68,52 +70,7 @@ export function AnimatedTrackInfo({
         {artist}
       </div>
 
-      <style jsx>{`
-        .animate-slide {
-          animation: slide-elegant 15s ease-in-out infinite;
-        }
 
-        @keyframes slide-elegant {
-          0% {
-            transform: translateX(0);
-          }
-          15% {
-            transform: translateX(0);
-          }
-          45% {
-            transform: translateX(calc(-100% + 80px));
-          }
-          65% {
-            transform: translateX(calc(-100% + 80px));
-          }
-          85% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes subtle-shake {
-          0%,
-          100% {
-            transform: translateX(0);
-          }
-          25% {
-            transform: translateX(-1px);
-          }
-          50% {
-            transform: translateX(1px);
-          }
-          75% {
-            transform: translateX(-0.5px);
-          }
-        }
-
-        .animate-subtle-shake {
-          animation: subtle-shake 2s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }

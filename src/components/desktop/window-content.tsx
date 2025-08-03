@@ -1,12 +1,6 @@
 import AboutMeWindow from '@/components/window-content/AboutMeWindow';
 import ContactMeWindow from '@/components/window-content/ContactMeWindow';
 import WeatherWindow from '@/components/window-content/WeatherWindow';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 
 import type { WindowType } from '@/types/desktop';
 import dynamic from 'next/dynamic';
@@ -14,7 +8,6 @@ import PlayerErrorBoundary from '@/components/window-content/PlayerErrorBoundary
 import SkillsWindow from '@/components/window-content/SkillsWindow';
 import ExperienceWindow from '@/components/window-content/ExperienceWindow';
 import Link from 'next/link';
-import Image from 'next/image';
 import ProjectsWindow from '../window-content/ProjectsWindow';
 const SpotifyPlayer = dynamic(
   () => import('@/components/window-content/media-player'),
@@ -25,15 +18,11 @@ const SpotifyPlayer = dynamic(
 
 interface WindowContentProps {
   type: WindowType['title'];
-  onMinimize?: () => void;
-  onClose?: () => void;
   minimized?: boolean;
 }
 
 export default function WindowContent({
   type,
-  onMinimize,
-  onClose,
   minimized = false,
 }: WindowContentProps) {
   const renderContent = () => {
@@ -42,8 +31,6 @@ export default function WindowContent({
         return (
           <PlayerErrorBoundary>
             <SpotifyPlayer
-              onMinimize={onMinimize}
-              onClose={onClose}
               minimized={minimized}
             />
           </PlayerErrorBoundary>
@@ -121,7 +108,13 @@ export default function WindowContent({
               </p>
               <button className='bg-[var(--color-accent-primary)] text-[var(--color-background-primary)] px-6 py-2 rounded hover:opacity-90 transition-opacity'>
                 Open GitHub
-                <Link href='https://github.com/kihdae' target='_blank'></Link>
+                <Link
+                  href='https://github.com/kihdae'
+                  target='_blank'
+                  onClick={() => {
+                    window.open('https://github.com/kihdae', '_blank');
+                  }}
+                ></Link>
               </button>
             </div>
           </div>

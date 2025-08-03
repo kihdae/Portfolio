@@ -1,6 +1,6 @@
 'use client';
 
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, X } from 'lucide-react';
 
 interface VolumeControlProps {
   onClose: () => void;
@@ -48,6 +48,14 @@ export default function VolumeControl({
           <span className='text-white/70 text-sm w-12 text-right'>
             {isMuted ? 0 : volumePercentage}%
           </span>
+        </div>
+        <div className='flex items-center justify-end'>
+          <button
+            onClick={onClose}
+            className='text-white/70 hover:text-white transition-colors'
+          >
+            <X className='w-4 h-4' />
+          </button>
         </div>
       </div>
     </div>

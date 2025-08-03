@@ -8,7 +8,7 @@ interface RestartScreenProps {
   onComplete?: () => void;
 }
 
-export default function RestartScreen({ onComplete }: RestartScreenProps) {
+  export default function RestartScreen({ onComplete }: RestartScreenProps) {
   const { isRestarting, restartMessage, restartProgress } = usePower();
   const [showMessage, setShowMessage] = useState(false);
 
@@ -137,6 +137,7 @@ export default function RestartScreen({ onComplete }: RestartScreenProps) {
           </motion.div>
 
           <motion.div
+            onClick={onComplete}
             className='absolute bottom-8 right-8 text-white/40 text-xs font-mono'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

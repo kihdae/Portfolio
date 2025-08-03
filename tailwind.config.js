@@ -22,6 +22,7 @@ module.exports = {
     'border-border',
     'animate-text-glow',
     'animate-subtle-shake',
+    'animate-slide-elegant',
     'animate-glitch-1',
     'animate-glitch-2',
     'animate-glitch-3',
@@ -105,6 +106,14 @@ module.exports = {
           '50%': { transform: 'translate(-0.5px, -0.5px)' },
           '75%': { transform: 'translate(-0.5px, 0.5px)' },
           '100%': { transform: 'translate(0, 0)' },
+        },
+        'slide-elegant': {
+          '0%': { transform: 'translateX(0)' },
+          '15%': { transform: 'translateX(0)' },
+          '45%': { transform: 'translateX(calc(-100% + 80px))' },
+          '65%': { transform: 'translateX(calc(-100% + 80px))' },
+          '85%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(0)' },
         },
         'glitch-1': {
           '0%': {
@@ -190,6 +199,7 @@ module.exports = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'text-glow': 'text-glow 2s ease-in-out infinite',
         'subtle-shake': 'subtle-shake 0.2s ease-in-out infinite',
+        'slide-elegant': 'slide-elegant 15s ease-in-out infinite',
         'glitch-1': 'glitch-1 2s linear infinite',
         'glitch-2': 'glitch-2 2s linear infinite',
         'glitch-3': 'glitch-3 2s linear infinite',

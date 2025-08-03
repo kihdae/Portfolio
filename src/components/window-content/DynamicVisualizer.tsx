@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic';
 import { getPerfectPresetForType } from '@/lib/visualizerPresets';
 import type { VisualizerType, AudioData } from '@/types/visualizer';
 
-// Dynamically import the Visualizer component
 const Visualizer = dynamic(() => import('./Visualizer'), {
   loading: () => (
     <div className='flex items-center justify-center h-full'>

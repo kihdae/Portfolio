@@ -66,7 +66,6 @@ export function useAudioManager(): AudioManagerReturn {
   const beatThresholdRef = useRef<number>(0.3);
 
   const startLoading = useCallback((message: string = 'Loading audio...') => {
-    console.log('Starting audio loading:', message);
     setIsLoading(true);
     setLoadingProgress(0);
     setLoadingMessage(message);
@@ -95,7 +94,6 @@ export function useAudioManager(): AudioManagerReturn {
   );
 
   const completeLoading = useCallback(() => {
-    console.log('Audio loading completed');
     setLoadingProgress(100);
     setLoadingMessage('Ready to play');
     setIsLoading(false);
@@ -112,7 +110,6 @@ export function useAudioManager(): AudioManagerReturn {
   }, []);
 
   const failLoading = useCallback((error: string) => {
-    console.error('Audio loading failed:', error);
     setLoadingMessage(`Error: ${error}`);
     setIsLoading(false);
 
@@ -133,7 +130,6 @@ export function useAudioManager(): AudioManagerReturn {
       audio.preload = 'auto';
 
       const handleLoadStart = () => {
-        console.log('Audio load started:', audio.src);
         startLoading('Initializing audio...');
       };
 
@@ -147,15 +143,13 @@ export function useAudioManager(): AudioManagerReturn {
       };
 
       const handleCanPlay = () => {
-        console.log('Audio can play:', audio.src);
         updateLoadingProgress(95, 'Audio ready...');
       };
 
       const handleCanPlayThrough = () => {
-        console.log('Audio can play through:', audio.src);
         completeLoading();
       };
-
+      
       const handleError = () => {
         const error = audio.error;
         const errorMessage = getAudioErrorMessage(error);
@@ -215,7 +209,6 @@ export function useAudioManager(): AudioManagerReturn {
               audioContextRef.current.destination
             );
 
-            console.log('AudioContext initialized for visualizer');
           }
         } catch (error) {
           console.warn('Could not initialize AudioContext immediately:', error);
@@ -261,7 +254,7 @@ export function useAudioManager(): AudioManagerReturn {
         audio.removeEventListener('canplaythrough', handleCanPlayThrough);
         audio.removeEventListener('error', handleError);
       };
-    }
+    } return;
   }, [startLoading, updateLoadingProgress, completeLoading, failLoading]);
 
   const calculateLowFrequency = useCallback((): number => {
@@ -442,7 +435,6 @@ export function useAudioManager(): AudioManagerReturn {
       try {
         updateAudioData();
       } catch (error) {
-        console.warn('Audio analysis error:', error);
       }
 
       if (isActive) {
@@ -487,7 +479,6 @@ export function useAudioManager(): AudioManagerReturn {
       if (!audioRef.current || url === currentUrlRef.current) return;
 
       try {
-        console.log('Setting audio source:', url);
         startLoading('Loading new audio...');
 
 
@@ -518,7 +509,6 @@ export function useAudioManager(): AudioManagerReturn {
           }, 15000); 
 
           const handleCanPlayThrough = () => {
-            console.log('Audio can play through:', url);
             if (loadingTimeoutRef.current) {
               clearTimeout(loadingTimeoutRef.current);
               loadingTimeoutRef.current = null;
@@ -533,7 +523,6 @@ export function useAudioManager(): AudioManagerReturn {
           };
 
           const handleError = () => {
-            console.log('Audio error during loading:', url);
             if (loadingTimeoutRef.current) {
               clearTimeout(loadingTimeoutRef.current);
               loadingTimeoutRef.current = null;
@@ -560,7 +549,6 @@ export function useAudioManager(): AudioManagerReturn {
           });
         });
       } catch (error) {
-        console.error('Error setting audio source:', error);
         failLoading('Failed to set audio source');
         throw error;
       }
@@ -573,7 +561,6 @@ export function useAudioManager(): AudioManagerReturn {
       if (!audioRef.current) return;
 
       try {
-        console.log('Attempting to play audio:', url || 'current source');
 
 
         if (url) {
@@ -618,15 +605,12 @@ export function useAudioManager(): AudioManagerReturn {
         if (audioContextRef.current.state === 'suspended') {
           updateLoadingProgress(75, 'Resuming audio context...');
           await audioContextRef.current.resume();
-          console.log('AudioContext resumed');
         }
 
 
         if (audioRef.current.paused) {
-          console.log('Starting playback...');
           updateLoadingProgress(90, 'Starting playback...');
           await audioRef.current.play();
-          console.log('Playback started successfully');
           completeLoading();
         }
       } catch (error) {
@@ -635,7 +619,6 @@ export function useAudioManager(): AudioManagerReturn {
             'Playback was interrupted, this is normal during track changes'
           );
         } else {
-          console.error('Error playing audio:', error);
           failLoading('Playback failed');
           throw error;
         }
@@ -690,11 +673,8 @@ export function useAudioManager(): AudioManagerReturn {
       return;
     }
     try {
-      console.log('Force resuming AudioContext...');
       await audioContextRef.current.resume();
-      console.log('AudioContext resumed forcefully');
     } catch (error) {
-      console.error('Failed to resume AudioContext forcefully:', error);
     }
   }, []);
 
@@ -711,10 +691,8 @@ export function useAudioManager(): AudioManagerReturn {
         audioContextRef.current.state === 'suspended'
       ) {
         try {
-          await audioContextRef.current.resume();
-          console.log('AudioContext kept alive');
-        } catch (error) {
-          console.error('Failed to keep AudioContext alive:', error);
+          await audioContextRef.current.resume(); 
+        } catch (error) { 
         }
       }
       }, 500); 

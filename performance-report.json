@@ -1,10 +1,10 @@
 {
-  "timestamp": "2025-08-02T23:07:53.610Z",
+  "timestamp": "2025-08-03T06:07:38.671Z",
   "metrics": {
     "bundleSize": {
-      "jsSize": "1.26 MB",
-      "cssSize": "95.97 KB",
-      "totalSize": "1.35 MB"
+      "jsSize": "27.22 MB",
+      "cssSize": "121.92 KB",
+      "totalSize": "27.34 MB"
     },
     "imageOptimization": {
       "totalImages": 15,
@@ -75,9 +75,9 @@
     },
     "fontLoading": {},
     "cssPurge": {
-      "totalSize": "95.97 KB",
+      "totalSize": "121.92 KB",
       "estimatedClasses": 1592,
-      "files": 3
+      "files": 2
     },
     "securityHeaders": {
       "total": 4,
@@ -85,5 +85,7 @@
       "missing": []
     }
   },
-  "recommendations": []
+  "recommendations": [
+    "Consider code splitting for large bundles"
+  ]
 }

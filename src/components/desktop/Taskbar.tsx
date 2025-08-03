@@ -43,7 +43,6 @@ export default function Taskbar({
   onWindowClick,
   onStartClick,
   showStartMenu,
-  systemState,
   systemControls,
   onSearch,
   // @ts-ignore
@@ -51,18 +50,15 @@ export default function Taskbar({
   onSelectIcon,
 }: TaskbarProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [showNotifications, setShowNotifications] = useState(false);
   const [showWifiControl, setShowWifiControl] = useState(false);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
-  const [showPowerMenu, setShowPowerMenu] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const {
     volume: contextVolume,
-    isMuted: contextIsMuted,
-    toggleMute,
+    isMuted: contextIsMuted
   } = useVolume();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -206,7 +202,7 @@ export default function Taskbar({
                     ${selectedIndex === index ? 'bg-accent/20' : ''}
                   `}
                   onClick={() => {
-                    onSelectIcon(icon.type, icon.name);
+                    onSelectIcon(getIconPathForWindow(icon.type), icon.name);
                     setSearchTerm('');
                     setShowSearchResults(false);
                   }}
@@ -318,21 +314,25 @@ export default function Taskbar({
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className='p-1.5 text-white/70'>
+                <button
+                  onClick={() => setShowWifiControl(!showWifiControl)}
+                  className='p-1.5 text-white/70 hover:text-white transition-colors'
+                >
                   <Wifi className='w-5 h-5' />
-                </span>
+                </button>
               </TooltipTrigger>
-              <WifiControl
-                isOpen={showWifiControl}
-                onOpen={() => setShowWifiControl(true)}
-                onClose={() => setShowWifiControl(false)}
-                isWifiOn={systemState.isWifiOn}
-                onToggleWifi={systemControls.toggleWifi}
-                onConnectToNetwork={systemControls.connectToNetwork}
-                connectedNetwork={systemState.networkName}
-              />
+              <TooltipContent
+                side='top'
+                className='bg-gray-700 text-white text-xs px-2 py-1 rounded'
+              >
+                Wi-Fi
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
+          {showWifiControl && (
+            <WifiControl onClose={() => setShowWifiControl(false)} />
+          )}
 
           <TooltipProvider delayDuration={300}>
             <Tooltip>

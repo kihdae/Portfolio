@@ -24,7 +24,6 @@ export default function WindowDebugPanel({
     startMonitoring,
     stopMonitoring,
     isMonitoring,
-    lastMetrics,
   } = useWindowDebugger({
     onMetricsChange: setMetrics,
   });

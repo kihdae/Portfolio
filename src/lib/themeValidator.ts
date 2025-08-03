@@ -1,8 +1,5 @@
-// ==========================================================================
-// Theme Validation & Debugging System
-// ==========================================================================
 
-import { themes, type ThemeVariables } from './themeConfig';
+import { themes } from './themeConfig';
 
 export interface ValidationResult {
   isValid: boolean;
@@ -19,9 +16,6 @@ export interface DebugInfo {
   validationResult: ValidationResult;
 }
 
-/**
- * Validates that all required theme variables are present
- */
 export const validateThemeVariables = (themeName: string): ValidationResult => {
   const result: ValidationResult = {
     isValid: true,
@@ -65,9 +59,7 @@ export const validateThemeVariables = (themeName: string): ValidationResult => {
   return result;
 };
 
-/**
- * Gets comprehensive debug information about the current theme
- */
+  
 export const getThemeDebugInfo = (): DebugInfo => {
   const root = document.documentElement;
   const computedStyle = getComputedStyle(root);
@@ -154,9 +146,7 @@ export const getThemeDebugInfo = (): DebugInfo => {
   };
 };
 
-/**
- * Logs comprehensive theme debug information to console
- */
+
 export const logThemeDebugInfo = (): void => {
   const debugInfo = getThemeDebugInfo();
 
@@ -194,9 +184,7 @@ export const logThemeDebugInfo = (): void => {
   console.groupEnd();
 };
 
-/**
- * Validates theme on window load and logs results
- */
+
 export const initializeThemeValidation = (): void => {
   // Validate on initial load
   setTimeout(() => {
@@ -224,9 +212,7 @@ export const initializeThemeValidation = (): void => {
   });
 };
 
-/**
- * Exports debug information for external use
- */
+
 export const exportThemeDebugInfo = (): string => {
   const debugInfo = getThemeDebugInfo();
   return JSON.stringify(debugInfo, null, 2);

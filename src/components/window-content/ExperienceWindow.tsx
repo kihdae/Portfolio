@@ -160,8 +160,9 @@ function ExperienceWindowClient() {
     };
   }, []);
 
-  const handleExperienceSelect = useCallback((experience: Experience) => {
+  const handleExperienceSelect = useCallback((experience: Experience, index: number) => {
     setSelectedExperience(experience);
+    carouselApi?.scrollTo(index);
   }, []);
 
   const handleCarouselSelect = useCallback((index: number) => {
@@ -206,7 +207,6 @@ function ExperienceWindowClient() {
   const getResponsiveConfig = () => {
     const isSmall = windowSize.width < 800;
     const isMedium = windowSize.width >= 800 && windowSize.width < 1200;
-    const isLarge = windowSize.width >= 1200;
 
     return {
       carouselItems: isSmall ? 1 : isMedium ? 2 : 3,
@@ -270,7 +270,7 @@ function ExperienceWindowClient() {
                           : 'border-[var(--color-border)] hover:border-[var(--color-accent-primary)]/30'
                       }
                     `}
-                    onClick={() => handleExperienceSelect(experience)}
+                    onClick={() => handleExperienceSelect(experience, index)}
                   >
                     {selectedExperience.id === experience.id && (
                       <div
@@ -406,6 +406,7 @@ function ExperienceWindowClient() {
               animate-in slide-in-from-bottom-4 duration-500
             '
             >
+              <ClientSideAnimations>
               <div className='flex items-start justify-between mb-6'>
                 <div className='flex-1 min-w-0'>
                   <div className='flex items-center gap-3 mb-2'>
@@ -511,8 +512,9 @@ function ExperienceWindowClient() {
                       {tech}
                     </Badge>
                   ))}
+                  </div>
                 </div>
-              </div>
+            </ClientSideAnimations>
             </div>
 
             <div

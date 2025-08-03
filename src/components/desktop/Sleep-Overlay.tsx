@@ -30,7 +30,6 @@ export default function SleepOverlay({ onWake }: SleepOverlayProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isWaking) return;
-      
       if (!['Control', 'Alt', 'Shift', 'Meta'].includes(e.key)) {
         setKeyPressCount(prev => {
           const newCount = prev + 1;

@@ -25,12 +25,10 @@ export class EnhancedVisualizerEngine {
   private visualParams: VisualParameters;
   private audioMapping: AudioMapping;
   private audioData: AudioData | null = null;
-  private isPlaying = false;
   private smoothingBuffer: Float32Array | null = null;
   private smoothingBufferSize: number = 0;
 
   private useThemeColors = true;
-  private themeOpacity = 1.0;
   private cachedThemeColors: {
     primary: string;
     secondary: string;
@@ -42,7 +40,6 @@ export class EnhancedVisualizerEngine {
     accent: '#B794FF',
     background: '#12101D',
   };
-  private themeCacheValid = false;
 
   private particles: Array<{
     x: number;
@@ -313,7 +310,7 @@ export class EnhancedVisualizerEngine {
       const x = i * (barWidth + spacing);
       const y = this.canvas.height - height;
 
-      this.drawCrispBar(x, y, barWidth, height, value, i);
+      this.drawCrispBar(x, y, barWidth, height, value);
     }
   }
 
@@ -323,7 +320,6 @@ export class EnhancedVisualizerEngine {
     width: number,
     height: number,
     intensity: number,
-    index: number
   ): void {
     const pixelX = Math.round(x);
     const pixelY = Math.round(y);
@@ -927,7 +923,6 @@ export class EnhancedVisualizerEngine {
           computedStyle.getPropertyValue('--color-background').trim() ||
           '#12101D',
       };
-      this.themeCacheValid = true;
     } catch (error) {
       console.warn('Failed to update theme colors:', error);
       this.cachedThemeColors = {
@@ -972,13 +967,8 @@ export class EnhancedVisualizerEngine {
     this.audioMapping = { ...this.audioMapping, ...mapping };
   }
 
-  setPlaying(playing: boolean): void {
-    this.isPlaying = playing;
-  }
-
-  setThemeIntegration(useTheme: boolean, opacity = 1.0): void {
+  setThemeIntegration(useTheme: boolean): void {
     this.useThemeColors = useTheme;
-    this.themeOpacity = opacity;
     if (useTheme) {
       this.updateThemeColors();
     }

@@ -2,7 +2,7 @@
 
 import type { WindowType, DragState, ResizeState } from '@/types/desktop';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Maximize2 } from 'lucide-react';
+import { X, Minus } from 'lucide-react';
 import WindowContent from './window-content';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
@@ -246,7 +246,7 @@ export default function WindowManager({
           cancelAnimationFrame(animationFrameRef.current);
         }
       };
-    }
+    } return;
   }, [
     dragState.isDragging,
     resizeState.isResizing,
@@ -356,8 +356,6 @@ export default function WindowManager({
             <div className='flex-1 overflow-hidden'>
               <WindowContent
                 type={window.type as any}
-                onMinimize={() => onMinimize(window.id)}
-                onClose={() => onClose(window.id)}
                 minimized={window.isMinimized}
               />
             </div>

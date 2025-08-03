@@ -38,15 +38,17 @@ export default function ShutdownScreen({ onComplete }: ShutdownScreenProps) {
       clearTimeout(gifTimer);
       clearTimeout(shutdownTimer);
     };
-  }, []);
+  }, [onComplete]);
 
   return (
     <div className='fixed inset-0 bg-black z-[9999] flex items-center justify-center'>
       {phase === 'gif' && (
         <div className='w-full h-full relative'>
-          <img
+          <Image
             src='/assets/raven.gif'
             alt='Shutdown animation'
+            width={1000}
+            height={1000}
             className='w-full h-full object-cover'
           />
           <div className='absolute inset-0 bg-black/30' />

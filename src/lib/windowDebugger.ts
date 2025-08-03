@@ -20,7 +20,6 @@ export function logWindowMetrics(
   options: DebuggerOptions = {}
 ): WindowMetrics | null {
   try {
-    // Find the window element by its key attribute (which is the window.id)
     const windowElement = document.querySelector(
       `[data-window-id="${windowId}"]`
     ) as HTMLElement;
@@ -32,10 +31,8 @@ export function logWindowMetrics(
       return null;
     }
 
-    // Get the bounding rectangle
     const rect = windowElement.getBoundingClientRect();
 
-    // Get computed styles for additional context
     const computedStyle = window.getComputedStyle(windowElement);
 
     const metrics: WindowMetrics = {
@@ -48,7 +45,6 @@ export function logWindowMetrics(
       windowTitle: windowName,
     };
 
-    // Format the output
     const formattedOutput = {
       window: windowName,
       position: { x: Math.round(rect.x), y: Math.round(rect.y) },
@@ -69,36 +65,24 @@ export function logWindowMetrics(
   }
 }
 
-/**
- * Log Experience window metrics
- */
 export function logExperienceWindowMetrics(
   options: DebuggerOptions = {}
 ): WindowMetrics | null {
   return logWindowMetrics('experience', 'Experience', options);
 }
 
-/**
- * Log Skills window metrics
- */
 export function logSkillsWindowMetrics(
   options: DebuggerOptions = {}
 ): WindowMetrics | null {
   return logWindowMetrics('skills', 'Skills', options);
 }
 
-/**
- * Log About window metrics
- */
 export function logAboutWindowMetrics(
   options: DebuggerOptions = {}
 ): WindowMetrics | null {
   return logWindowMetrics('about', 'About', options);
 }
 
-/**
- * Log all window metrics at once
- */
 export function logAllWindowMetrics(
   options: DebuggerOptions = {}
 ): WindowMetrics[] {
@@ -120,10 +104,6 @@ export function logAllWindowMetrics(
   return results;
 }
 
-/**
- * Start continuous monitoring of window metrics
- * @param options - Debugger options including interval
- */
 export function startWindowMonitoring(
   options: DebuggerOptions = {}
 ): () => void {
@@ -148,9 +128,6 @@ export function startWindowMonitoring(
   };
 }
 
-/**
- * Create a debug button that logs metrics when clicked
- */
 export function createDebugButton(
   windowName: string,
   onClick?: (metrics: WindowMetrics | null) => void
@@ -181,9 +158,6 @@ export function createDebugButton(
   return button;
 }
 
-/**
- * Get default window positions and sizes for initial state
- */
 export function getDefaultWindowStates(): Record<
   string,
   {
@@ -219,9 +193,6 @@ export function getDefaultWindowStates(): Record<
   };
 }
 
-/**
- * Extract metrics from current window state for React useState initialization
- */
 export function extractMetricsForState(metrics: WindowMetrics): {
   position: { x: number; y: number };
   size: { width: number; height: number };
@@ -232,7 +203,7 @@ export function extractMetricsForState(metrics: WindowMetrics): {
   };
 }
 
-// Export for global access (useful for console debugging)
+  
 if (typeof window !== 'undefined') {
   (window as any).windowDebugger = {
     logExperienceWindowMetrics,
