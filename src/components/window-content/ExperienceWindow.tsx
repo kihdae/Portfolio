@@ -163,13 +163,27 @@ function ExperienceWindowClient() {
   const handleExperienceSelect = useCallback((experience: Experience, index: number) => {
     setSelectedExperience(experience);
     carouselApi?.scrollTo(index);
-  }, []);
+  }, [carouselApi]);
 
-  const handleCarouselSelect = useCallback((index: number) => {
-    if (experiences[index]) {
-      setSelectedExperience(experiences[index]);
+  // Update selected experience when carousel API changes
+  useEffect(() => {
+    if (carouselApi) {
+      const handleCarouselChange = () => {
+        const selectedIndex = carouselApi.selectedScrollSnap();
+        if (experiences[selectedIndex]) {
+          setSelectedExperience(experiences[selectedIndex]);
+        }
+      };
+
+      carouselApi.on('select', handleCarouselChange);
+      
+      return () => {
+        carouselApi.off('select', handleCarouselChange);
+      };
+    } else {
+return;
     }
-  }, []);
+  }, [carouselApi]);
 
   const getBadgeVariant = (type: string) => {
     switch (type) {
@@ -228,7 +242,7 @@ function ExperienceWindowClient() {
         </h2>
         <p className='text-[var(--color-text-secondary)] text-sm'></p>
         <DeploymentEffect
-          text='I update these every quarter of the year! (Click to apply & swipe to view more)'
+          text='I update these every quarter of the year!'
           className='text-xl font-bold text-[var(--color-text-secondary)] mt-2 mb-2 text-center'
         />
       </div>
@@ -243,11 +257,6 @@ function ExperienceWindowClient() {
           }}
           className='w-full'
           setApi={setCarouselApi}
-          onSelect={() => {
-            if (carouselApi) {
-              handleCarouselSelect(carouselApi.selectedScrollSnap());
-            }
-          }}
         >
           <CarouselContent className='-ml-2 md:-ml-4'>
             {experiences.map((experience, index) => (
