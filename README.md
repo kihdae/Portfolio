@@ -81,18 +81,6 @@ npm install
 npm run dev
 ```
 
-### Environment Variables
-Create a `.env.local` file:
-```bash
-# Optional: Analytics
-NEXT_PUBLIC_GA_MEASUREMENT_ID=your_ga_id
-NEXT_PUBLIC_VERCEL_ANALYTICS_ID=your_vercel_analytics_id
-
-# Optional: Error Tracking
-NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
-SENTRY_DSN=your_sentry_dsn
-```
-
 ## 📦 Available Scripts
 
 ```bash
@@ -127,25 +115,6 @@ The project includes a comprehensive build process with:
 - **Husky**: Pre-commit and pre-push hooks
 - **Security Audits**: Automated security checks
 - **Performance Monitoring**: Core Web Vitals tracking
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
-
-### Netlify
-1. Connect your GitHub repository
-2. Set build command: `npm run build`
-3. Set publish directory: `.next`
-4. Configure environment variables
-
-### GitHub Pages
-1. Enable GitHub Pages in repository settings
-2. Set source to GitHub Actions
-3. Configure build workflow
-
 ## 📊 Monitoring & Analytics
 
 The project includes built-in monitoring for:
