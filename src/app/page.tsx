@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { DeploymentEffect } from '@/components/window-content/ProjectsWindow';
 import Image from 'next/image';
 
 export default function LoginPage() {
@@ -133,7 +134,7 @@ export default function LoginPage() {
           className='object-cover opacity-80'
           draggable='false'
           priority
-        />
+          />
         <div className='absolute inset-0 bg-[#1f222b]/50' />
       </div>
 
@@ -160,6 +161,9 @@ export default function LoginPage() {
           <p className='text-lg md:text-xl mb-2 text-shadow-lg'>
             Press Space to Enter
           </p>
+          <h1 className='text-white text-4xl font-bold'>
+            <DeploymentEffect className='text-white text-4xl font-bold' text='Please minimize the window to 67% for the best experience!! thank you. ' />
+          </h1>
           <div className='flex justify-center'>
             <div className='px-6 py-2 border border-white/30 rounded-lg bg-white/10 backdrop-blur-sm'>
               <span className='text-sm font-mono'>SPACE</span>
