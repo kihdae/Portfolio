@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   skillCategories,
   Skill as SkillType,
@@ -77,23 +76,23 @@ function SkillsWindowClient() {
   };
 
   const getResponsiveConfig = () => {
-    const isSmall = windowSize.width < 800;
-    const isMedium = windowSize.width >= 800 && windowSize.width < 1200;
+    const isSmall = windowSize.width < 600;
+    const isMedium = windowSize.width >= 600 && windowSize.width < 1000;
 
     return {
       showTechPreview: windowSize.width > 600,
-      maxTechTags: isSmall ? 3 : isMedium ? 4 : 5,
+      maxTechTags: isSmall ? 2 : isMedium ? 3 : 4,
       fontSize: isSmall ? 'sm' : isMedium ? 'base' : 'lg',
-      padding: isSmall ? 'p-4' : isMedium ? 'p-5' : 'p-6',
+      padding: isSmall ? 'p-1' : isMedium ? 'p-2' : 'p-3',
+      gridCols: 'grid-cols-1',
     };
   };
 
   const config = getResponsiveConfig();
 
   return (
-    <ScrollArea className='h-full'>
-      <div className={`h-full flex flex-col ${config.padding} overflow-hidden`}>
-        <div className='mb-6 flex-shrink-0'>
+      <div className={`h-full flex flex-col ${config.padding} overflow-hidden`} style={{ maxHeight: '100%', maxWidth: '100%', width: '100%', boxSizing: 'border-box' }}>
+        <div className='mb-4 flex-shrink-0'>
           <h2 className='text-2xl font-bold text-[var(--color-text-primary)] mb-2 tracking-wide'>
             SKILLS
           </h2>
@@ -106,14 +105,14 @@ function SkillsWindowClient() {
           />
         </div>
 
-        <div className='mb-6 flex-shrink-0'>
-          <div className='flex flex-wrap gap-2'>
+        <div className='mb-4 flex-shrink-0'>
+          <div className='flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[var(--color-accent-primary)]/30 scrollbar-thumb-rounded-full'>
             {skillCategories.map((category) => (
               <button
                 key={category.name}
                 onClick={() => handleCategorySelect(category)}
                 className={`
-                  px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                  px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex-shrink-0
                   ${
                     selectedCategory.name === category.name
                       ? 'bg-[var(--color-accent-primary)] text-[var(--color-background-primary)] shadow-lg'
@@ -127,8 +126,8 @@ function SkillsWindowClient() {
           </div>
         </div>
 
-        <div className='flex-1 overflow-hidden'>
-          <div className='h-full flex flex-col'>
+        <div className='flex-1 overflow-hidden min-h-0 w-full'>
+          <div className='h-full flex flex-col min-h-0 w-full'>
             <div className='mb-4 flex-shrink-0'>
               <h3 className='text-lg font-semibold text-[var(--color-text-primary)] mb-2'>
                 {selectedCategory.name}
@@ -138,43 +137,46 @@ function SkillsWindowClient() {
               </p>
             </div>
 
-            <div className='flex-1 overflow-y-auto'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[var(--color-accent-primary)]/30 scrollbar-thumb-rounded-full'>
+              <div className={`grid ${config.gridCols} gap-2 pb-2 w-full`}>
                 {selectedCategory.skills.map((skill, index) => (
                   <div
                     key={skill.name}
                     className='
-                      p-4 rounded-lg border border-[var(--color-border)]
+                      p-3 rounded-lg border border-[var(--color-border)]
                       bg-[var(--color-surface-primary)]/50 backdrop-blur-sm
                       hover:border-[var(--color-accent-primary)]/30
-                      transition-all duration-300 hover:scale-105
+                      transition-all duration-300 hover:scale-[1.02]
                       animate-in slide-in-from-bottom-2 duration-300
+                      transform-gpu
+                      overflow-hidden
+                      w-full
                     '
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <div className='flex items-center justify-between mb-3'>
-                      <h4 className='font-medium text-[var(--color-text-primary)]'>
+                    <div className='flex items-center justify-between mb-3 min-w-0'>
+                      <h4 className='font-medium text-[var(--color-text-primary)] truncate flex-1'>
                         {skill.name}
                       </h4>
                       <span
-                        className={`text-xs px-2 py-1 rounded-full border ${getLevelColor(skill.level)}`}
+                        className={`text-xs px-2 py-1 rounded-full border ${getLevelColor(skill.level)} flex-shrink-0 ml-2`}
                       >
                         {skill.level}
                       </span>
                     </div>
 
                     {skill.description && (
-                      <p className='text-xs text-[var(--color-text-secondary)] mb-3 line-clamp-2'>
+                      <p className='text-xs text-[var(--color-text-secondary)] mb-3 line-clamp-2 break-words'>
                         {skill.description}
                       </p>
                     )}
 
                     <div className='space-y-2'>
-                      <div className='flex items-center justify-between text-xs text-[var(--color-text-secondary)]'>
-                        <span>Proficiency</span>
-                        <span className='capitalize'>{skill.level}</span>
+                      <div className='flex items-center justify-between text-xs text-[var(--color-text-secondary)] min-w-0'>
+                        <span className='truncate'>Proficiency</span>
+                        <span className='capitalize flex-shrink-0'>{skill.level}</span>
                       </div>
-                      <div className='w-full bg-[var(--color-surface-primary)] rounded-full h-2'>
+                      <div className='w-full bg-[var(--color-surface-primary)] rounded-full h-2 overflow-hidden'>
                         <div
                           className={`h-2 rounded-full transition-all duration-500 ${getLevelColor(skill.level).split(' ')[0]}`}
                           style={{
@@ -194,16 +196,17 @@ function SkillsWindowClient() {
               </div>
             </div>
 
-            <div className='mt-6 flex-shrink-0'>
+            <div className='mt-2 flex-shrink-0'>
               <div className='
-                p-4 rounded-lg
+                p-2 rounded-lg
                 bg-[var(--color-surface-primary)]/30 backdrop-blur-sm
                 border border-[var(--color-border)]
+                overflow-hidden
               '>
                 <h4 className='font-semibold text-[var(--color-text-primary)] mb-3'>
                   Skills Overview
                 </h4>
-                <div className='grid grid-cols-2 md:grid-cols-4 gap-4 text-center'>
+                <div className='grid grid-cols-2 gap-2 text-center'>
                   {[
                     {
                       label: 'Total Skills',
@@ -212,24 +215,7 @@ function SkillsWindowClient() {
                         0
                       ),
                     },
-                    {
-                      label: 'Expert Level',
-                      value: skillCategories.reduce(
-                        (acc, cat) =>
-                          acc +
-                          cat.skills.filter(s => s.level === 'expert').length,
-                        0
-                      ),
-                    },
-                    {
-                      label: 'Advanced Level',
-                      value: skillCategories.reduce(
-                        (acc, cat) =>
-                          acc +
-                          cat.skills.filter(s => s.level === 'advanced').length,
-                        0
-                      ),
-                    },
+                    
                     { label: 'Categories', value: skillCategories.length },
                   ].map((stat, index) => (
                     <div
@@ -237,7 +223,7 @@ function SkillsWindowClient() {
                       className='animate-in slide-in-from-bottom-2 duration-300'
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
-                      <div className='text-xl font-bold text-[var(--color-accent-primary)] mb-1'>
+                      <div className='text-lg font-bold text-[var(--color-accent-primary)] mb-1'>
                         {stat.value}
                       </div>
                       <div className='text-xs text-[var(--color-text-secondary)] uppercase tracking-wide'>
@@ -251,7 +237,6 @@ function SkillsWindowClient() {
           </div>
         </div>
       </div>
-    </ScrollArea>
   );
 }
 
