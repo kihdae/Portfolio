@@ -146,16 +146,20 @@ function SkillsWindowClient() {
                       p-3 rounded-lg border border-[var(--color-border)]
                       bg-[var(--color-surface-primary)]/50 backdrop-blur-sm
                       hover:border-[var(--color-accent-primary)]/30
-                      transition-all duration-300 hover:scale-[1.02]
+                      transition-all duration-300 hover:scale-[1.01]
                       animate-in slide-in-from-bottom-2 duration-300
                       transform-gpu
                       overflow-hidden
                       w-full
+                      max-w-full
                     '
-                    style={{ animationDelay: `${index * 50}ms` }}
+                    style={{ 
+                      animationDelay: `${index * 50}ms`,
+                      transform: 'translateZ(0)' // Force hardware acceleration
+                    }}
                   >
                     <div className='flex items-center justify-between mb-3 min-w-0'>
-                      <h4 className='font-medium text-[var(--color-text-primary)] truncate flex-1'>
+                      <h4 className='font-medium text-[var(--color-text-primary)] truncate flex-1 pr-2'>
                         {skill.name}
                       </h4>
                       <span
@@ -166,14 +170,14 @@ function SkillsWindowClient() {
                     </div>
 
                     {skill.description && (
-                      <p className='text-xs text-[var(--color-text-secondary)] mb-3 line-clamp-2 break-words'>
+                      <p className='text-xs text-[var(--color-text-secondary)] mb-3 line-clamp-2 break-words overflow-hidden'>
                         {skill.description}
                       </p>
                     )}
 
                     <div className='space-y-2'>
                       <div className='flex items-center justify-between text-xs text-[var(--color-text-secondary)] min-w-0'>
-                        <span className='truncate'>Proficiency</span>
+                        <span className='truncate pr-2'>Proficiency</span>
                         <span className='capitalize flex-shrink-0'>{skill.level}</span>
                       </div>
                       <div className='w-full bg-[var(--color-surface-primary)] rounded-full h-2 overflow-hidden'>
@@ -202,6 +206,7 @@ function SkillsWindowClient() {
                 bg-[var(--color-surface-primary)]/30 backdrop-blur-sm
                 border border-[var(--color-border)]
                 overflow-hidden
+                w-full
               '>
                 <h4 className='font-semibold text-[var(--color-text-primary)] mb-3'>
                   Skills Overview
