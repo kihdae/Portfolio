@@ -4,7 +4,7 @@ A modern, interactive portfolio website built with Next.js 14+, TypeScript, and 
 
 ## ✨ Features
 
-- **🎨 Interactive Desktop Interface** - Windows 98-inspired UI with draggable windows
+- **🎨 Interactive Desktop Interface** - Windows 10  inspired UI with draggable windows
 - **🎵 Functional Media Player** - Play music with visualizer and mixer controls
 - **🌙 Dynamic Themes** - Multiple color schemes with smooth transitions
 - **📱 Responsive Design** - Works perfectly on all devices
@@ -19,7 +19,6 @@ A modern, interactive portfolio website built with Next.js 14+, TypeScript, and 
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
 - **Audio**: Web Audio API
-- **Deployment**: Vercel/Netlify ready
 
 ## 🎯 Performance Features
 
@@ -56,9 +55,6 @@ src/
 - **Background Music**: Ambient audio for the desktop experience
 
 ## 🎨 Theme System
-
-- **Solar**: Cyberpunk neon theme
-- **Abyss**: Tropical sunset theme
 - **Default**: Clean, modern theme
 - **Custom**: Extensible theme system
 
