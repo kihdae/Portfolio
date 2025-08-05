@@ -53,37 +53,37 @@ const WeatherIcon = ({
 
   switch (condition.toLowerCase()) {
     case 'sunny':
+    case 'clear':
       return (
         <div className={`${baseClasses} relative`}>
           <Sun className='w-full h-full text-yellow-400' />
-          {/* Cat eye glint */}
           <div className='absolute top-1 right-1 w-1 h-1 bg-white rounded-full opacity-80' />
         </div>
       );
     case 'partly cloudy':
     case 'cloudy':
+    case 'clouds':
       return (
         <div className={`${baseClasses} relative`}>
           <Cloud className='w-full h-full text-gray-300' />
-          {/* Tiny cat ears on cloud */}
           <div className='absolute -top-1 left-2 w-2 h-1 bg-gray-300 rounded-t-full' />
           <div className='absolute -top-1 right-2 w-2 h-1 bg-gray-300 rounded-t-full' />
         </div>
       );
     case 'rainy':
+    case 'rain':
       return (
         <div className={`${baseClasses} relative`}>
           <CloudRain className='w-full h-full text-blue-300' />
-          {/* Rain drops as paw prints */}
           <div className='absolute bottom-0 left-1/4 w-1 h-2 bg-blue-300 rounded-full' />
           <div className='absolute bottom-0 right-1/4 w-1 h-2 bg-blue-300 rounded-full' />
         </div>
       );
     case 'snowy':
+    case 'snow':
       return (
         <div className={`${baseClasses} relative`}>
           <CloudSnow className='w-full h-full text-blue-200' />
-          {/* Snowflakes as tiny stars */}
           <div className='absolute bottom-0 left-1/3 w-1 h-1 bg-white rounded-full' />
           <div className='absolute bottom-0 right-1/3 w-1 h-1 bg-white rounded-full' />
         </div>
@@ -111,7 +111,7 @@ export default function WeatherWindow() {
 
         // Fallback to mock data if no API key is provided
         if (!API_KEY) {
-          // Use mock data for demonstration
+          // Use mock data for demonstration with proper 4-day forecast
           const mockWeatherData: WeatherData = {
             location: 'Chicago, IL',
             current: {
@@ -124,32 +124,32 @@ export default function WeatherWindow() {
             },
             forecast: [
               {
-                day: 'Today',
-                high: 78,
-                low: 65,
-                condition: 'Partly Cloudy',
-                icon: 'cloud-sun',
-              },
-              {
-                day: 'Tomorrow',
-                high: 82,
-                low: 68,
-                condition: 'Sunny',
-                icon: 'sun',
+                day: 'Wednesday',
+                high: 83,
+                low: 81,
+                condition: 'Cloudy',
+                icon: 'cloud',
               },
               {
                 day: 'Wednesday',
-                high: 75,
-                low: 62,
+                high: 80,
+                low: 79,
+                condition: 'Cloudy',
+                icon: 'cloud',
+              },
+              {
+                day: 'Wednesday',
+                high: 74,
+                low: 70,
                 condition: 'Cloudy',
                 icon: 'cloud',
               },
               {
                 day: 'Thursday',
-                high: 70,
-                low: 58,
-                condition: 'Rainy',
-                icon: 'cloud-rain',
+                high: 68,
+                low: 68,
+                condition: 'Cloudy',
+                icon: 'cloud',
               },
             ],
           };
@@ -158,7 +158,6 @@ export default function WeatherWindow() {
           return;
         }
 
-        // First, get the location name using reverse geocoding
         const geocodeResponse = await fetch(
           `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`
         );
@@ -178,7 +177,6 @@ export default function WeatherWindow() {
           }
         } else {
          
-          // Try alternative geocoding using a free service
           try {
             const altGeocodeResponse = await fetch(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`
@@ -215,30 +213,72 @@ export default function WeatherWindow() {
 
         const currentWeather = data.list[0];
 
-        const forecast = data.list
-          .filter((item: any) => item.dt % 8 === 0) 
-          .slice(0, 4) 
-          .map((item: any) => {
-            const date = new Date(item.dt * 1000);
-            const dayNames = [
-              'Today',
-              'Tomorrow',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday',
-            ];
-            const dayName = dayNames[date.getDay()];
-
-            return {
-              day: dayName,
-              high: Math.round(item.main.temp_max),
-              low: Math.round(item.main.temp_min),
-              condition: item.weather[0].main,
-              icon: item.weather[0].main.toLowerCase(),
-            };
+        // Get 4-day forecast with proper day names
+        const today = new Date();
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        // Get unique days for the next 4 days
+        const forecast: Array<{
+          day: string;
+          high: number;
+          low: number;
+          condition: string;
+          icon: string;
+        }> = [];
+        
+        for (let i = 0; i < 4; i++) {
+          const futureDate = new Date(today);
+          futureDate.setDate(today.getDate() + i);
+          const dayName = dayNames[futureDate.getDay()] || 'Unknown';
+          
+          // Find the weather data for this day (closest to noon)
+          const targetDate = new Date(futureDate);
+          targetDate.setHours(12, 0, 0, 0);
+          
+          const dayData = data.list.find((item: any) => {
+            const itemDate = new Date(item.dt * 1000);
+            const itemDay = itemDate.getDate();
+            const targetDay = targetDate.getDate();
+            return itemDay === targetDay;
           });
+          
+          if (dayData) {
+            forecast.push({
+              day: dayName,
+              high: Math.round(dayData.main.temp_max),
+              low: Math.round(dayData.main.temp_min),
+              condition: dayData.weather[0].main,
+              icon: dayData.weather[0].main.toLowerCase(),
+            });
+          } else {
+            // Fallback: use the first available data for this day
+            const fallbackData = data.list.find((item: any) => {
+              const itemDate = new Date(item.dt * 1000);
+              const itemDay = itemDate.getDate();
+              const targetDay = targetDate.getDate();
+              return itemDay === targetDay;
+            });
+            
+            if (fallbackData) {
+              forecast.push({
+                day: dayName,
+                high: Math.round(fallbackData.main.temp_max),
+                low: Math.round(fallbackData.main.temp_min),
+                condition: fallbackData.weather[0].main,
+                icon: fallbackData.weather[0].main.toLowerCase(),
+              });
+            } else {
+              // Final fallback: use mock data for this day
+              forecast.push({
+                day: dayName,
+                high: 75,
+                low: 65,
+                condition: 'Cloudy',
+                icon: 'cloud',
+              });
+            }
+          }
+        }
 
         const weatherData: WeatherData = {
           location: `${cityName}, ${countryCode}`,
@@ -491,7 +531,7 @@ export default function WeatherWindow() {
                 </span>
               </div>
 
-              <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+              <div className='grid grid-cols-4 gap-3'>
                 {weatherData.forecast.map((day: any, index: number) => (
                   <motion.div
                     key={`${day.day}-${index}`}
